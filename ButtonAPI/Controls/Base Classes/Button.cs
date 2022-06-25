@@ -1,0 +1,58 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using UnityEngine;
+using UnityEngine.UI;
+
+namespace xButtonAPI.Controls.Base_Classes
+{
+    public class Button : ControlWithText
+    {
+        public Image subMenuIcon => transform?.Find("Badge_MMJump")?.GetComponentInChildren<Image>(true) ?? transform?.Find("Container/Icon_Arrow")?.GetComponentInChildren<Image>(true);
+
+        public Image buttonImage => transform?.Find("Icon")?.GetComponentInChildren<Image>(true) ?? transform?.Find("Container/Icon")?.GetComponentInChildren<Image>(true);
+
+        public UnityEngine.UI.Button button => gameObject?.GetComponentInChildren<UnityEngine.UI.Button>(true);
+
+        public List<VRC.UI.Elements.Tooltips.UiTooltip> tooltip => gameObject?.GetComponentsInChildren<VRC.UI.Elements.Tooltips.UiTooltip>(true).ToList();
+
+        public void SetAction(Action newAction)
+        {
+            button.onClick = new UnityEngine.UI.Button.ButtonClickedEvent();
+            button.onClick.AddListener(newAction);
+        }
+
+        public void SetInteractable(bool val)
+        {
+            button.interactable = val;
+        }
+
+        public void SetIcon(Sprite newIcon, bool preserveColor = false)
+        {
+            if (newIcon == null)
+            {
+                buttonImage.gameObject.SetActive(false);
+                return;
+            }
+            buttonImage.sprite = newIcon;
+            buttonImage.overrideSprite = newIcon;
+            buttonImage.gameObject.SetActive(true);
+            if (preserveColor)
+            {
+                buttonImage.color = Color.white;
+            }
+        }
+
+        public void SetIconColor(Color color)
+        {
+            buttonImage.color = color;
+        }
+
+        public void SetTooltip(string newTooltip)
+        {
+            tooltip.ForEach(s => s.field_Public_String_0 = newTooltip);
+        }
+    }
+}
