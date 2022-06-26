@@ -40,7 +40,7 @@ namespace EXO.Modules
                     DoorCol = false;
                     MelonCoroutines.Start(DoorColliders());
                 }
-            }).SetToggleState(true);
+            }).SetToggleState(true);            
             new SingleButton(Murder4, "Force Start", "Force Starts The Match Countdown", () =>
             {
                 GameObject.Find("Game Logic").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Btn_Start");                
@@ -143,23 +143,3 @@ namespace EXO.Modules
         } 
     }
 }
-/* loop all
-new ToggleButton(GunFire, "Loop Everything", "Loops All", "No More Loop All", (value) =>
-{
-    Main.RevolverLoop = value;
-    if (value)
-        MelonCoroutines.Start(GunLoops.RevoverLoop());
-    Main.LugerLoop = value;
-    if (value)
-        MelonCoroutines.Start(GunLoops.LugerLoop());
-    Main.ShotgunLoop = value;
-    if (value)
-        MelonCoroutines.Start(GunLoops.ShotgunLoop());
-    Main.FragLoop = value;
-    if (value)
-        MelonCoroutines.Start(GunLoops.FragLoop());
-    Main.SmokeGrenadeLoop = value;
-    if (value)
-        MelonCoroutines.Start(GunLoops.SmokeLoop());
-});
-*/
