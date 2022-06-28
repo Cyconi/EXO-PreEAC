@@ -696,12 +696,18 @@
     <Compile Include="ButtonAPI\Wings\RawUI\WingToggle.cs" />
     <Compile Include="ButtonAPI\Wings\Wing.cs" />
     <Compile Include="ButtonAPI\Wings\WingAPI.cs" />
+    <Compile Include="EXOBase.cs" />
     <Compile Include="Hornet\HornetFileManager.cs" />
+    <Compile Include="Modules\ESP.cs" />
     <Compile Include="Modules\WorldEX\AmongUs.cs" />
     <Compile Include="Modules\WorldEX\Murder4.cs" />
     <Compile Include="Modules\PlayerSelect.cs" />
     <Compile Include="Modules\WorldEX\PrisonEsc.cs" />
     <Compile Include="Modules\WorldEX\WorldExploits.cs" />
+    <Compile Include="Patches\Events\OnPlayerJoinEvent.cs" />
+    <Compile Include="Patches\Events\OnPlayerLeaveEvent.cs" />
+    <Compile Include="Patches\EXOPatch.cs" />
+    <Compile Include="Patches\JoinLeavePatch.cs" />
     <Compile Include="Wrappers\PlayerWrapper.cs" />
     <Compile Include="MainModule.cs" />
     <Compile Include="ConsoleLogger.cs" />
@@ -716,4 +722,7 @@
     <Compile Include="Wrappers\WorldWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy /Y "$(TargetDir)$(TargetName).dll" "C:\Program Files (x86)\Steam\steamapps\common\VRChat\Mods\EXO.dll"</PostBuildEvent>
+  </PropertyGroup>
 </Project>

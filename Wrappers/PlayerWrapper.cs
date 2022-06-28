@@ -19,9 +19,10 @@ namespace Wrapper.PlayerWrapper
         public static Dictionary<int, VRC.Player> PlayersActorID = new Dictionary<int, VRC.Player>();
         private static Collider LocalPlayerCollider;
         private static VRC_EventHandler handler;
-        internal static List<string> ClientUsers = new List<string>();
-
+        internal static List<string> ClientUsers = new List<string>();        
+        public static Player GetPlayer() => Player.prop_Player_0;
         public static Player[] GetAllPlayers() => PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0.ToArray();
+        public static VRC.Core.Pool.PooledArray<Player> AllPlayers2() => PlayerManager.prop_PlayerManager_0.prop_PooledArray_1_Player_0;
         public static Player GetByUsrID(string usrID) => GetAllPlayers().First(x => x.prop_APIUser_0.id == usrID);
         public static void Teleport(this Player player) => LocalVRCPlayer.transform.position = player.prop_VRCPlayer_0.transform.position;
         public static Player LocalPlayer() => Player.prop_Player_0;
@@ -231,7 +232,18 @@ namespace Wrapper.PlayerWrapper
                 }
 
         }
-
+        //added
+        public static void PlayerMeshEsp(VRC.Player player, bool State)
+        {
+            var id = player.prop_APIUser_0.id;
+            if (id == null || id == GetPlayer().prop_APIUser_0.id) return;
+            var Renderer = player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>())
+            {
+                HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(renderer, State);
+            }
+        }
+        //
         public static Player GetPlayerByActorID(int actorId)
         {
             Player player = null;

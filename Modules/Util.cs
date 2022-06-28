@@ -16,7 +16,7 @@ namespace EXO.Modules
 {
     internal class Util : BaseModule
     {
-        internal static ToggleButton ToggleBtn;       
+        internal static ToggleButton ToggleBtn;        
         public override void OnQuickMenuInit()
         {
             var Util = new ButtonGroup(MainModule.Util, "<color=#9b0000>Utilities</color>");
@@ -25,7 +25,28 @@ namespace EXO.Modules
             {
                 foreach (var Player in GetAllPlayers())
                     PlayerWrapper.ReloadAvatar(Player);
-            });                       
+            });
+            new ToggleButton(Util, "Toggle Maker", "Make New Toggle", "Get rid Of Toggle", (value) =>
+            {
+                if (value)
+                {
+                    {
+                        foreach (VRC.Player player in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
+                        {
+                            PlayerWrapper.PlayerMeshEsp(player, true);
+                        }
+                        ESP.EspState = true;
+                    }
+                }
+                if (!value)
+                {
+                    foreach (VRC.Player player in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
+                    {
+                        PlayerWrapper.PlayerMeshEsp(player, false);
+                    }
+                    ESP.EspState = false;
+                }
+            });
             new ToggleButton(Util, "Toggle Maker", "Make New Toggle", "Get rid Of Toggle", (value) =>
             {
                     ToggleBtn.SetActive(value);                

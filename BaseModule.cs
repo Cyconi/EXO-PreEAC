@@ -1,3 +1,5 @@
+
+using EXO.Patches.Events;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,10 +19,10 @@ namespace EXO
         {
             Priority = priority;
         }
-    }
+    }    
     public class BaseModule
-    {
-       
+    {       
+
         /// <summary>
         ///   Runs after Game Initialization.
         /// </summary>
@@ -133,6 +135,5 @@ namespace EXO
         public virtual void OnPreferencesLoaded()
         {
         }
-
-    }
+    }    
 }

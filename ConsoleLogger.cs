@@ -46,6 +46,15 @@ namespace ConsoleLogger
             System.Console.WriteLine(MessageToLog);
             System.Console.ResetColor();
         }
+        public static void E(Exception ex)
+        {
+            string stack = ex.StackTrace;
+            string source = ex.Source;
+            string message = ex.Message;
+            string LF = Environment.NewLine;
+
+            CLog.E($"\n============ERROR============ \nTIME: {DateTime.Now.ToString("HH:mm.fff", System.Globalization.CultureInfo.InvariantCulture)} \nERROR MESSAGE: {message} \nLAST INSTRUCTIONS: {stack} \nFULL ERROR: {ex.ToString()} \n=============END=============\n");
+        }
     }
 }
 
