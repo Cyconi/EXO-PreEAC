@@ -696,6 +696,7 @@
     <Compile Include="ButtonAPI\Wings\RawUI\WingToggle.cs" />
     <Compile Include="ButtonAPI\Wings\Wing.cs" />
     <Compile Include="ButtonAPI\Wings\WingAPI.cs" />
+    <Compile Include="ESP.cs" />
     <Compile Include="Hornet\HornetFileManager.cs" />
     <Compile Include="Modules\WorldEX\AmongUs.cs" />
     <Compile Include="Modules\WorldEX\Murder4.cs" />

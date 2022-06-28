@@ -26,7 +26,13 @@ namespace EXO.Modules
                 foreach (var Player in GetAllPlayers())
                     PlayerWrapper.ReloadAvatar(Player);
             });
-            new ToggleButton(Util, "ESP [Not Working]", "ESP On", "ESP Off", (value) =>
+            new ToggleButton(Util, "Item ESP", "Item ESP On", "Item ESP Off", (value) =>
+            {
+                ESP.ItemESP = value;
+                GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(1f, 0f, 0f);
+                MelonCoroutines.Start(ESP.ItemHighlight());
+            });
+            new ToggleButton(Util, "Mesh ESP [Broken]", "Mesh ESP On", "Mesh ESP Off", (value) =>
             {
                 if (value)
                 {
