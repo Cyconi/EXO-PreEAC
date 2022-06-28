@@ -58,7 +58,6 @@ namespace EXO.Modules
             Speed();
             JetPack();
         }
-
         //Comfort Fly        
         public static float FlySpeed = 2f;        
         private void ComfortFly()
@@ -80,7 +79,6 @@ namespace EXO.Modules
                 velocity.y = Networking.LocalPlayer.GetJumpImpulse();
                 Networking.LocalPlayer.SetVelocity(velocity);
             }
-
             if (XRDevice.isPresent)
             {                
                 playerTransform.position += playerTransform.forward * Time.deltaTime * Input.GetAxis("Vertical") * FlySpeed;
@@ -96,15 +94,11 @@ namespace EXO.Modules
                 if (Input.GetKey(KeyCode.Q))
                     playerTransform.position -= new Vector3(0f, Time.deltaTime * speed, 0f);
 
-                if (!Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.LeftControl))
-                    playerTransform.position -= new Vector3(0f, Time.deltaTime * speed, 0f);
-
                 if (Input.GetKey(KeyCode.E))
                     playerTransform.position += new Vector3(0f, Time.deltaTime * speed, 0f);                
             }
             _motionState?.Reset();
-        }
-               
+        }              
         //Camera Fly
         private void CameraFly()
         {
@@ -141,15 +135,11 @@ namespace EXO.Modules
                 if (Input.GetKey(KeyCode.Q))
                     playerTransform.position -= new Vector3(0f, Time.deltaTime * speed, 0f);
 
-                if (!Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.LeftControl))
-                    playerTransform.position -= new Vector3(0f, Time.deltaTime * speed, 0f);
-
                 if (Input.GetKey(KeyCode.E))
                     playerTransform.position += new Vector3(0f, Time.deltaTime * speed, 0f);
             }
             _motionState?.Reset();
         }
-
         //Fast Fly
         public static float FastFlySpeed = 10f;
         private void FastFly()
@@ -187,15 +177,11 @@ namespace EXO.Modules
                 if (Input.GetKey(KeyCode.Q))
                     playerTransform.position -= new Vector3(0f, Time.deltaTime * speed, 0f);
 
-                if (!Input.GetKey(KeyCode.Q) && Input.GetKey(KeyCode.LeftControl))
-                    playerTransform.position -= new Vector3(0f, Time.deltaTime * speed, 0f);
-
                 if (Input.GetKey(KeyCode.E))
                     playerTransform.position += new Vector3(0f, Time.deltaTime * speed, 0f);
             }
             _motionState?.Reset();
         }
-
         //Speed
         public static float SpeedVal = 3f;
         private void Speed()
@@ -214,8 +200,6 @@ namespace EXO.Modules
             playerTransform.position += playerTransform.forward * Time.deltaTime * Input.GetAxis("Vertical") * speed;
             playerTransform.position += playerTransform.right * Time.deltaTime * Input.GetAxis("Horizontal") * speed;            
         }        
-
-        //JetPack
         private void JetPack()
         {
             if (!JetPackToggle) return;

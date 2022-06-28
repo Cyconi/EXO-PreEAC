@@ -10,7 +10,6 @@ namespace ConsoleLogger
     {
         internal static void L(string MessageToLog, ConsoleColor NameColor = ConsoleColor.DarkRed, ConsoleColor TextColor = ConsoleColor.White, ConsoleColor MidColor = ConsoleColor.DarkRed)
         {
-
             System.Console.ForegroundColor = NameColor;
             System.Console.Write("[EXO]");
             System.Console.ForegroundColor = MidColor;
@@ -23,7 +22,6 @@ namespace ConsoleLogger
 
         internal static void S(string MessageToLog, ConsoleColor NameColor = ConsoleColor.DarkRed, ConsoleColor TextColor = ConsoleColor.DarkRed, ConsoleColor MidColor = ConsoleColor.DarkRed)
         {
-
             System.Console.ForegroundColor = NameColor;
             System.Console.Write("[EXO]");
             System.Console.ForegroundColor = MidColor;

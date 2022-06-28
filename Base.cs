@@ -19,7 +19,6 @@ namespace EXO
             Vector4 border = Vector4.zero;
 
             Sprite s = Sprite.CreateSprite_Injected(t, ref rect, ref pivot, 100.0f, 0, SpriteMeshType.Tight, ref border, false);
-
             return s;
         }
     }
