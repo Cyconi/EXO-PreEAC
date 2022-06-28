@@ -26,7 +26,7 @@ namespace EXO.Modules
                 foreach (var Player in GetAllPlayers())
                     PlayerWrapper.ReloadAvatar(Player);
             });
-            new ToggleButton(Util, "Toggle Maker", "Make New Toggle", "Get rid Of Toggle", (value) =>
+            new ToggleButton(Util, "ESP [Not Working]", "ESP On", "ESP Off", (value) =>
             {
                 if (value)
                 {
@@ -35,7 +35,7 @@ namespace EXO.Modules
                         {
                             PlayerWrapper.PlayerMeshEsp(player, true);
                         }
-                        ESP.EspState = true;
+                        //ESP.EspState = true;
                     }
                 }
                 if (!value)
@@ -44,7 +44,7 @@ namespace EXO.Modules
                     {
                         PlayerWrapper.PlayerMeshEsp(player, false);
                     }
-                    ESP.EspState = false;
+                    //ESP.EspState = false;
                 }
             });
             new ToggleButton(Util, "Toggle Maker", "Make New Toggle", "Get rid Of Toggle", (value) =>

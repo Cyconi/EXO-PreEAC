@@ -22,6 +22,7 @@ namespace Wrapper.PlayerWrapper
         internal static List<string> ClientUsers = new List<string>();        
         public static Player GetPlayer() => Player.prop_Player_0;
         public static Player[] GetAllPlayers() => PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0.ToArray();
+        //new
         public static VRC.Core.Pool.PooledArray<Player> AllPlayers2() => PlayerManager.prop_PlayerManager_0.prop_PooledArray_1_Player_0;
         public static Player GetByUsrID(string usrID) => GetAllPlayers().First(x => x.prop_APIUser_0.id == usrID);
         public static void Teleport(this Player player) => LocalVRCPlayer.transform.position = player.prop_VRCPlayer_0.transform.position;

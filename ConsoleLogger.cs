@@ -46,6 +46,7 @@ namespace ConsoleLogger
             System.Console.WriteLine(MessageToLog);
             System.Console.ResetColor();
         }
+        //new
         public static void E(Exception ex)
         {
             string stack = ex.StackTrace;

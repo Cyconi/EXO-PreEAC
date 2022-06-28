@@ -81,10 +81,12 @@ namespace EXO.Melon
             xButtonAPI.xButtonAPI.OnInit += () => {
                 foreach (var module in MainModules)
                 {
-                    try {
+                    try
+                    {
                         module?.OnQuickMenuInit();
                     }
-                    catch (Exception ex) {
+                    catch (Exception ex)
+                    {
                         MelonLogger.Error($"A BaseModule Failed To Execute OnQuickMenuInit! ({module.GetType().Name}\n                         =====ERROR====\n\n" + ex.StackTrace);
                     }
                 }
@@ -120,7 +122,7 @@ namespace EXO.Melon
                 module?.OnLateUpdate();
         }
 
-       
+
         public override void OnSceneWasInitialized(int buildIndex, string sceneName)
         {
             foreach (var module in MainModules)
