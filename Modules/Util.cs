@@ -11,6 +11,7 @@ using ConsoleLogger;
 using UnityEngine;
 using System.Collections;
 using MelonLoader;
+using UnityEngine.SceneManagement;
 
 namespace EXO.Modules
 {
@@ -23,7 +24,7 @@ namespace EXO.Modules
 
             new SingleButton(Util, "Reload All Avi", "Reloads all avatars", () =>
             {
-                foreach (var Player in GetAllPlayers())
+                foreach (var Player in UserUtils.GetAllPlayers())
                     PlayerWrapper.ReloadAvatar(Player);
             });
             new ToggleButton(Util, "Item ESP", "Item ESP On", "Item ESP Off", (value) =>
@@ -72,9 +73,65 @@ namespace EXO.Modules
             });
             ToggleBtn.SetActive(false);
         }
-        internal static List<Player> GetAllPlayers()
+        
+        internal class UserUtils
         {
-            return PlayerManager.field_Private_Static_PlayerManager_0 == null ? null : PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList();
-        }                        
+            internal static GameObject GetLocalPlayer()
+            {
+                foreach (GameObject gameObject in UserUtils.GetAllGameObjects())
+                {
+                    bool flag = gameObject.name.StartsWith("VRCPlayer[Local]");
+                    if (flag)
+                    {
+                        return gameObject;
+                    }
+                }
+                return new GameObject();
+            }
+            public static VRCPlayer CurrentUser
+            {
+                get
+                {
+                    return VRCPlayer.field_Internal_Static_VRCPlayer_0;
+                }
+                set
+                {
+                    CurrentUser = CurrentUser;
+                }
+            }
+            internal static Player LocalDownload()
+            {
+                foreach (GameObject gameObject in UserUtils.GetAllGameObjects())
+                {
+                    bool flag = gameObject.name.StartsWith("VRCPlayer[Local]");
+                    if (flag)
+                    {
+                        return gameObject.GetComponent<VRCPlayer>().prop_Player_0;
+
+                    }
+                }
+                return new Player();
+            }
+            internal static Player GetPlayerTest()
+            {
+                foreach (GameObject gameObject in UserUtils.GetAllGameObjects())
+                {
+                    bool flag = !GameObject.Find("UserInterface/Canvas_QuickMenu(Clone)/Container/Window/QMParent/Menu_SelectedUser_Local").active;
+                    if (flag)
+                    {
+                        return gameObject.GetComponent<VRCPlayer>().prop_Player_0;
+                    }
+                }
+                return new Player();
+            }
+            internal static GameObject[] GetAllGameObjects()
+            {
+                return SceneManager.GetActiveScene().GetRootGameObjects();
+            }
+            internal static List<Player> GetAllPlayers()
+            {
+                return PlayerManager.field_Private_Static_PlayerManager_0 == null ? null : PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList();
+            }
+        }
     }
 }

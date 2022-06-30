@@ -15,8 +15,11 @@ using MelonLoader;
 using VRC.UI.Elements.Menus;
 using VRC.UI;
 using VRC;
+using VRC.SDK3.Components;
 using Wrapper.PlayerWrapper;
 using System.Collections;
+using Wrapper.WorldWrapper;
+using static EXO.Modules.Util;
 
 namespace EXO.Modules
 {
@@ -51,12 +54,13 @@ namespace EXO.Modules
             
             PlayerSel = new CollapsibleButtonGroup(Parent, "<color=#9b0000>[EXO]</color>");
             CLog.L("[ Player Select Menu Has Been Assembled! ]");
-
+#region Target
+            /*
             new SingleButton(PlayerSel, "Set Target", "Sets User as Target", () =>
             {
                 try
                 {
-                    Target = GetSelPlayer();
+                    Target = GetSelPlayer();                    
                 }
                 catch
                 {
@@ -64,8 +68,39 @@ namespace EXO.Modules
                 }                
                 CLog.L($"Target Set to {Target.DisplayName()}");
             });
+            */
+#endregion
+            new SingleButton(PlayerSel, "Teleport", "Teleport To Selected User", () =>
+            {
+                Target = GetSelPlayer();
+                UserUtils.GetLocalPlayer().transform.position = Target.transform.position;
+            });
+            new SingleButton(PlayerSel, "Bring All Items", "Brings All Items To The Selected User", () =>
+            {
+                foreach (VRC_Pickup vrc_Pickup in UnityEngine.Object.FindObjectsOfType<VRC_Pickup>())
+                {
+                    Networking.LocalPlayer.TakeOwnership(vrc_Pickup.gameObject);
+                    vrc_Pickup.transform.position = Target.transform.position + new Vector3(0f, 0.1f, 0f);
+                }
+                foreach (VRCSDK2.VRC_Pickup vrc_Pickup2 in UnityEngine.Object.FindObjectsOfType<VRCSDK2.VRC_Pickup>())
+                {
+                    Networking.LocalPlayer.TakeOwnership(vrc_Pickup2.gameObject);
+                    vrc_Pickup2.transform.position = Target.transform.position + new Vector3(0f, 0.1f, 0f);
+                }
+                foreach (VRCPickup vrc_Pickup3 in UnityEngine.Object.FindObjectsOfType<VRCPickup>())
+                {
+                    Networking.LocalPlayer.TakeOwnership(vrc_Pickup3.gameObject);
+                    vrc_Pickup3.transform.position = Target.transform.position + new Vector3(0f, 0.1f, 0f);
+                }
+                foreach (VRCSDK2.VRC_ObjectSync vrc_PickupSDK in UnityEngine.Object.FindObjectsOfType<VRCSDK2.VRC_ObjectSync>())
+                {
+                    Networking.LocalPlayer.TakeOwnership(vrc_PickupSDK.gameObject);
+                    vrc_PickupSDK.transform.position = Target.transform.position + new Vector3(0f, 0.1f, 0f);
+                }
+            });
             new SingleButton(PlayerSel, "Explode", "BOOM!", () =>
             {
+                Target = GetSelPlayer();
                 CLog.L($"{Target.DisplayName()} Went BOOM!");
                 GameObject flag1 = GameObject.Find("Game Logic/Weapons/Unlockables/Frag (0)/Intact");
                 if (flag1)
@@ -91,6 +126,7 @@ namespace EXO.Modules
             }, true, null);
             new SingleButton(PlayerSel, "Kill", "Kill Selected Player", () =>
             {
+                Target = GetSelPlayer();
                 CLog.L($"{Target.DisplayName()} Died");
                 VRCPlayer component = Target.gameObject.GetComponent<VRCPlayer>();
                 string value = component._player.ToString();
@@ -137,21 +173,39 @@ namespace EXO.Modules
             }, true, null);
             new ToggleButton(PlayerSel, "Explode Spam", "GOO BOOOM", "No More Boom", (value) =>
             {
+                Target = GetSelPlayer();
                 CLog.L($"{Target.DisplayName()} Is In An Endless BOOM!");
                 ExplodeState = value;
                 if (value) MelonLoader.MelonCoroutines.Start(ExplodeLoop());
             });
             new ToggleButton(PlayerSel, "Kill Spam", "Get Fucked Monkie", "No More Death", (value) =>
             {
+                Target = GetSelPlayer();
                 CLog.L($"{Target.DisplayName()} Is In An Endless Death Loop!");
                 KillState = value;
                 if (value) MelonLoader.MelonCoroutines.Start(KillLoop());
             });
             new ToggleButton(PlayerSel, "Kill Screen", "Get Fucked No See", "Ok you can see now", (value) =>
             {
+                Target = GetSelPlayer();
                 CLog.L($"{Target.DisplayName()} Can Not See Or Play The Game");
                 KillScreenState = value;
                 if (value) MelonLoader.MelonCoroutines.Start(KillScreenLoop());
+            });
+            new SingleButton(PlayerSel, "Target Udon Nuke", "Udon Nuke The Selected Player", () =>
+            {
+                Target = GetSelPlayer();
+                for (int g = 0; g < WorldWrapper.udonBehaviours.Length; g++)
+                {
+                    if (Networking.GetOwner(WorldWrapper.udonBehaviours[g].gameObject) != Target.field_Private_VRCPlayerApi_0)
+                    {
+                        Networking.SetOwner(Target.field_Private_VRCPlayerApi_0, WorldWrapper.udonBehaviours[g].gameObject);
+                    }
+                    foreach (string name in WorldWrapper.udonBehaviours[g]._eventTable.Keys)
+                    {
+                        WorldWrapper.udonBehaviours[g].SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, name);
+                    }
+                }
             });
         }
         internal static bool KillState;
