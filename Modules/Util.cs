@@ -29,8 +29,14 @@ namespace EXO.Modules
             new ToggleButton(Util, "Item ESP", "Item ESP On", "Item ESP Off", (value) =>
             {
                 ESP.ItemESP = value;
-                GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(1f, 0f, 0f);
+                GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
                 MelonCoroutines.Start(ESP.ItemHighlight());
+            });
+            new ToggleButton(Util, "Trigger ESP", "Trigger ESP On", "Trigger ESP Off", (value) =>
+            {
+                ESP.TriggerESP = value;
+                GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
+                MelonCoroutines.Start(ESP.TriggerHighlight());
             });
             new ToggleButton(Util, "Mesh ESP [Broken]", "Mesh ESP On", "Mesh ESP Off", (value) =>
             {

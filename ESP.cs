@@ -10,19 +10,16 @@ using Wrapper.WorldWrapper;
 using VRC.SDKBase;
 using VRC.SDK3.Components;
 using VRCSDK2;
-using VRC_Pickup = VRCSDK2.VRC_Pickup;
 
 namespace EXO
 {
     internal class ESP
     {
         internal static bool ItemESP;
-        internal static float OnUpdateRoutineDelay = 0f;
-        public static List<Renderer> PickupsRenderers = new List<Renderer>();
-        public static List<Renderer> TriggersRenderers = new List<Renderer>();
+        internal static bool TriggerESP;
         public static IEnumerator ItemHighlight()
         {
-            var array = UnityEngine.Object.FindObjectsOfType<VRC_Pickup>();
+            var array = UnityEngine.Object.FindObjectsOfType<VRCSDK2.VRC_Pickup>();
             var AllUdonPickups = UnityEngine.Object.FindObjectsOfType<VRCPickup>();
             var AllSyncPickups = UnityEngine.Object.FindObjectsOfType<VRC_ObjectSync>();
 
@@ -68,6 +65,46 @@ namespace EXO
                     catch { }
 
                 if (!ItemESP)
+                    yield break;
+
+                yield return new WaitForSeconds(0.01f);
+            }
+        }
+        public static IEnumerator TriggerHighlight()
+        {
+            var AllTriggers = UnityEngine.Object.FindObjectsOfType<VRC.SDKBase.VRC_Trigger>();
+            var AllSDK2Triggers = UnityEngine.Object.FindObjectsOfType<VRCSDK2.VRC_Trigger>();
+
+            while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
+                yield return null;
+
+            for (; ; )
+            {
+                for (int i = 0; i < AllTriggers.Length; i++)
+                    try
+                    {
+                        if (AllTriggers[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllTriggers[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = AllTriggers[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, TriggerESP);
+                            }
+                    }
+                    catch { }
+
+                for (int i = 0; i < AllSDK2Triggers.Length; i++)
+                    try
+                    {
+                        if (AllSDK2Triggers[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllSDK2Triggers[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = AllSDK2Triggers[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, TriggerESP);
+                            }
+                    }
+                    catch { }
+
+                if (!TriggerESP)
                     yield break;
 
                 yield return new WaitForSeconds(0.01f);
