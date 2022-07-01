@@ -23,6 +23,7 @@ namespace EXO
             var AllUdonPickups = UnityEngine.Object.FindObjectsOfType<VRCPickup>();
             var AllBaseUdonPickups = UnityEngine.Object.FindObjectsOfType<VRC.SDKBase.VRC_Pickup>();
             var AllSyncPickups = UnityEngine.Object.FindObjectsOfType<VRC_ObjectSync>();
+            var AllSDK3SyncPickups = UnityEngine.Object.FindObjectsOfType <VRCObjectSync>();
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;
@@ -69,6 +70,17 @@ namespace EXO
                             if (AllSyncPickups[i].GetComponent<MeshRenderer>() != null)
                             {
                                 var render = AllSyncPickups[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, ItemESP);
+                            }
+                    }
+                    catch { }
+                for (int i = 0; i < AllSDK3SyncPickups.Length; i++)
+                    try
+                    {
+                        if (AllSDK3SyncPickups[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllSDK3SyncPickups[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = AllSDK3SyncPickups[i].GetComponent<MeshRenderer>();
                                 HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, ItemESP);
                             }
                     }

@@ -17,17 +17,22 @@ using VRC.SDKBase;
 using VRC.UI.Elements.Menus;
 using VRC.UI;
 using VRC;
+using VRC.Networking;
+using static EXO.Modules.Util;
 using Wrapper.PlayerWrapper;
+using Wrapper.WorldWrapper;
 
 namespace EXO.Modules
 {
     internal class Murder4 : BaseModule
     {
         private static bool DoorCol;
+        private static bool DeityMode;
+        private static bool GoldGun;
+        private static bool NoCoolDown;        
         public static void RunFirst()
         {
-            var Murder4 = new CollapsibleButtonGroup(MainModule.WorldEX, "<color=#9b0000>Murder 4</color>");
-
+            var Murder4 = new CollapsibleButtonGroup(MainModule.WorldEX, "<color=#9b0000>Murder 4</color>");            
             new ToggleButton(Murder4, "Door Colliders", "Toggle On Door Colliders", "Toggle Off Door Colliders", (value) =>
             {
                 if (value)
@@ -103,8 +108,8 @@ namespace EXO.Modules
             {
                 KillAllStateM = value;
                 if (value) MelonLoader.MelonCoroutines.Start(KillLoopM());
-            });
-        }
+            });            
+        }        
         internal static bool KillAllStateM;
         internal static IEnumerator KillLoopM()
         {
@@ -140,6 +145,44 @@ namespace EXO.Modules
                 yield return null;
             }
             yield return null;
-        } 
+        }        
+
+        private static bool ForceUdon(string __0, VRC.Player __1, UdonSync __instance)
+        {
+            if (GoldGun)
+            {
+                if (__0 == "NonPatronSkin" && __1.field_Private_APIUser_0.id == UserUtils.LocalDownload().field_Private_APIUser_0.id)
+                    GameObject.Find("/Game Logic").transform.Find("Weapons/Revolver").gameObject.GetComponent<VRC.Udon.UdonBehaviour>().SendCustomNetworkEvent(0, "PatronSkin");
+            }
+            else if (GoldGun)
+                if (__0 == "NonPatronSkin")
+                    GameObject.Find("/Game Logic").transform.Find("Weapons/Revolver").gameObject.GetComponent<VRC.Udon.UdonBehaviour>().SendCustomNetworkEvent(0, "PatronSkin");
+
+            if (NoCoolDown)
+                if (__0 == "SyncDryFire" && __1.field_Private_APIUser_0.id == UserUtils.LocalDownload().field_Private_APIUser_0.id)
+                    switch (__instance.gameObject.name)
+                    {
+                        case "Revolver":
+                            GameObject.Find("Game Logic/Weapons/Revolver").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.Owner, "Fire");
+                            break;
+                        case "Shotgun (0)":
+                            GameObject.Find("Game Logic/Weapons/Unlockables/Shotgun (0)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.Owner, "Fire");
+                            break;
+                        case "Luger (0)":
+                            GameObject.Find("Game Logic/Weapons/Unlockables/Luger (0)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.Owner, "Fire");
+                            break;
+                    }
+
+            if (DeityMode)
+                if (__0 == "SyncKill")
+                {
+                    if (__1.field_Private_APIUser_0.displayName != UserUtils.LocalDownload().DisplayName() && Vector3.Distance(VRCPlayer.field_Internal_Static_VRCPlayer_0.transform.position, __1.transform.position) > 3.5f)
+                    {
+                        CLog.L($"Prevented Death From {__1.field_Private_APIUser_0.displayName}");
+                    }
+                    return false;
+                }
+            return true;
+        }        
     }
 }

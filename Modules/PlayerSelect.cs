@@ -77,6 +77,7 @@ namespace EXO.Modules
             });
             new SingleButton(PlayerSel, "Bring All Items", "Brings All Items To The Selected User", () =>
             {
+                Target = GetSelPlayer();
                 foreach (VRC_Pickup vrc_Pickup in UnityEngine.Object.FindObjectsOfType<VRC_Pickup>())
                 {
                     Networking.LocalPlayer.TakeOwnership(vrc_Pickup.gameObject);
@@ -191,22 +192,7 @@ namespace EXO.Modules
                 CLog.L($"{Target.DisplayName()} Can Not See Or Play The Game");
                 KillScreenState = value;
                 if (value) MelonLoader.MelonCoroutines.Start(KillScreenLoop());
-            });
-            new SingleButton(PlayerSel, "Target Udon Nuke", "Udon Nuke The Selected Player", () =>
-            {
-                Target = GetSelPlayer();
-                for (int g = 0; g < WorldWrapper.udonBehaviours.Length; g++)
-                {
-                    if (Networking.GetOwner(WorldWrapper.udonBehaviours[g].gameObject) != Target.field_Private_VRCPlayerApi_0)
-                    {
-                        Networking.SetOwner(Target.field_Private_VRCPlayerApi_0, WorldWrapper.udonBehaviours[g].gameObject);
-                    }
-                    foreach (string name in WorldWrapper.udonBehaviours[g]._eventTable.Keys)
-                    {
-                        WorldWrapper.udonBehaviours[g].SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, name);
-                    }
-                }
-            });
+            });            
         }
         internal static bool KillState;
         internal static bool KillScreenState;
