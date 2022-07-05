@@ -34,7 +34,7 @@ namespace Wrapper.PlayerWrapper
         public static bool IsBot(this Player player) => player.GetPing() <= 0 && player.GetFrames() <= 0 && player.UserID() != APIUser.CurrentUser.id || player.transform.position == Vector3.zero;
         public static VRC.Player GetSelectedUser() => GetByUsrID(GameObject.Find("UserInterface").gameObject.GetComponentInChildren<SelectedUserMenuQM>().field_Private_IUser_0.prop_String_0);
         public static Player GetPlayer(this VRCPlayer player) => player.prop_Player_0;
-        public static VRCPlayer GetVRCPlayer(this Player player) => player._vrcplayer;
+        public static VRCPlayer GetVRCPlayer(this Player player) => player._vrcplayer;        
         public static Color GetTrustColor(this VRC.Player player) => VRCPlayer.Method_Public_Static_Color_APIUser_0(player.GetAPIUser());
         public static APIUser GetAPIUser(this VRCPlayer Instance) => Instance.GetPlayer().GetAPIUser();
         public static VRCPlayerApi GetVRCPlayerApi(this Player Instance) => Instance?.prop_VRCPlayerApi_0;
@@ -45,8 +45,7 @@ namespace Wrapper.PlayerWrapper
         public static Photon.Realtime.Player GetPhotonPlayer(this Player player) => player.prop_Player_1;
         public static bool ClientDetect(this Player player) => player.GetFrames() > 111 || player.GetFrames() < 10 || player.GetPing() > 5400 || player.GetPing() < 10 || ClientUsers.Contains(player.UserID());
         public static ApiAvatar GetAPIAvatar(this VRCPlayer vrcPlayer) => vrcPlayer.prop_ApiAvatar_0;
-        public static ApiAvatar GetAPIAvatar(this Player player) => player.GetVRCPlayer().GetAPIAvatar();
-        public static VRCPlayer GetVRCPlayer2() => VRCPlayer.field_Internal_Static_VRCPlayer_0;
+        public static ApiAvatar GetAPIAvatar(this Player player) => player.GetVRCPlayer().GetAPIAvatar();        
         public static Animator GetAnimator(this VRCPlayer player) => player.field_Internal_Animator_0;
         public static string UserID(this Player Instance) => Instance.GetAPIUser().id;
         public static void ReloadAvatar(this Player Instance) => VRCPlayer.Method_Public_Static_Void_APIUser_0(Instance.GetAPIUser());

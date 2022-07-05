@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using DruUdonStuff;
+using static EXO_Udon.UdonStuff;
 
 namespace EXO.Hornet
 {
@@ -35,7 +35,7 @@ namespace EXO.Hornet
             {
                 new SingleButton(HornetMenu, button.name, button.desc, () =>
                 {
-                    UdonStuff.SendUdonEventAll(button.eventObject, button.udonEvent);
+                    SendUdonEventAll(button.eventObject, button.udonEvent);
                 }, false);
             }
         }

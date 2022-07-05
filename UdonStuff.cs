@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using VRC;
+using VRC.SDKBase;
 using VRC.Udon;
+using Wrapper.PlayerWrapper;
+using Wrapper.WorldWrapper;
 
-namespace DruUdonStuff
+namespace EXO_Udon
 {	
-	internal class UdonStuff
+	internal static class UdonStuff
 	{
 		public static void SendUdonEventAll(string obj, string udonEvent)
 		{
@@ -48,6 +52,24 @@ namespace DruUdonStuff
 					gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(0, udonEvent);
 				}
 			}
-		}
-	}
+		}        
+        public static VRC.Player GrabOwner(this GameObject gameObject)
+        {
+            foreach (VRC.Player player in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
+            {
+                if (player.field_Private_VRCPlayerApi_0.IsOwner(gameObject))
+                {
+                    return player;
+                }
+            }
+            return null;
+        }
+        public static void SetEventOwner(this GameObject gameObject, VRC.Player player)
+        {
+            if (GrabOwner(gameObject) != player)
+            {
+                Networking.SetOwner(player.field_Private_VRCPlayerApi_0, gameObject);
+            }
+        }
+    }
 }

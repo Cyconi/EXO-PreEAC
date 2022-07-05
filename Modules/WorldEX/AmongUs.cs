@@ -1,5 +1,4 @@
-﻿using DruUdonStuff;
-using MelonLoader;
+﻿using MelonLoader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,6 +11,7 @@ using VRC.Udon;
 using VRC.Udon.Common.Interfaces;
 using xButtonAPI.Controls;
 using xButtonAPI.Controls.Grouping;
+using static EXO_Udon.UdonStuff;
 
 namespace EXO.Modules
 {
@@ -23,12 +23,12 @@ namespace EXO.Modules
 
             new SingleButton(AmongUs, "Task EarRape", "Gah My Ears!!", () =>
             {
-                UdonStuff.SendUdonEventsWithName("CompleteTask");
+                SendUdonEventsWithName("CompleteTask");
             });
             new SingleButton(AmongUs, "Give All Tasks", "Dam Thats alot to do", () =>
             {
-                UdonStuff.SendUdonEventsWithName("AssignTask");
-                UdonStuff.SendUdonEventsWithName("AssignWiring");
+                SendUdonEventsWithName("AssignTask");
+                SendUdonEventsWithName("AssignWiring");
             });
             new SingleButton(AmongUs, "Self Imposter", "Set Yourself as Imposter", () =>
             {
@@ -154,7 +154,7 @@ namespace EXO.Modules
         {
             for (; ; )
             {
-                UdonStuff.SendUdonEventsWithName("CompleteTask");
+                SendUdonEventsWithName("CompleteTask");
                 yield return new WaitForSeconds(0.1f);
                 if (!EarRapeState)
                     yield break;

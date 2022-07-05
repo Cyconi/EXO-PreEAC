@@ -14,12 +14,14 @@ using xButtonAPI.Controls.Grouping;
 namespace EXO.Modules
 {
     internal class Movment : BaseModule
-    {
+    {        
         private static bool FlyToggle;
-        private static bool FastFlyToggle;
+        private static bool FastFlyToggle;        
         private static bool CameraFlyToggle;
         private static bool SpeedToggle;
         private static bool JetPackToggle = true;
+        private static bool SpaceCope;
+        internal static ToggleButton SpaceToggleBtn;
         internal static VRCMotionState _motionState; //For Flys
         public override void OnQuickMenuInit()
         {            
@@ -49,6 +51,15 @@ namespace EXO.Modules
             {
                 JetPackToggle = value;
             }).SetToggleState(true);
+            new ToggleButton(Movement, "Space Jump", "Are you sure?", "nah nvm", (value) =>
+            {
+                SpaceToggleBtn.SetActive(value);
+            });
+            SpaceToggleBtn = new ToggleButton(Movement, "Death Space Jump", "Bruh", "Its Not to Late...", (value) =>
+            {
+                SpaceCope = value;
+            });
+            SpaceToggleBtn.SetActive(false);
         }
         public override void OnUpdate()
         {
@@ -57,6 +68,7 @@ namespace EXO.Modules
             CameraFly();
             Speed();
             JetPack();
+            ToSpace();
         }
         //Comfort Fly        
         public static float FlySpeed = 2f;        
@@ -211,55 +223,55 @@ namespace EXO.Modules
                 velocity.y = Networking.LocalPlayer.GetJumpImpulse();
                 Networking.LocalPlayer.SetVelocity(velocity);
             }
-        }
-
-        /* Edward Fast Fly
-        private Transform camera()
+        }        
+        public static float Space = 340282300000000000000000000000000000000f;
+        private void ToSpace()
         {
-        return GameObject.Find("Camera (eye)").transform;
-        }
-        same as above, (below is more compact)
-        private static Transform camera() =>
-        GameObject.Find("Camera (eye)").transform;
-        private void NoctFly()
-        {                   
-            if (!FastFlyToggle) return;
-            if (VRC.Player.prop_Player_0 == null) return;
+            var player = VRCPlayer.field_Internal_Static_VRCPlayer_0;
+            if (player == null)
+                return;
 
-            float flyspeed = Input.GetKey(KeyCode.LeftShift) ? Time.deltaTime * 60 : Time.deltaTime * 30;
-            if (VRC.Player.prop_Player_0.field_Private_VRCPlayerApi_0.IsUserInVR())
+            if (_motionState == null)
+                _motionState = player.GetComponent<VRCMotionState>();
+
+            if (!SpaceCope) return;
+
+            var playerTransform = player.transform;
+
+            if (VRCInputManager.Method_Public_Static_VRCInput_String_0("Jump").prop_Single_2 == 1f)
             {
-                if (Input.GetAxis("Oculus_CrossPlatform_SecondaryThumbstickVertical") < 0f)
-                    VRC.Player.prop_Player_0.transform.position += camera().up * flyspeed;
-                if (Input.GetAxis("Oculus_CrossPlatform_SecondaryThumbstickVertical") > 0f)
-                    VRC.Player.prop_Player_0.transform.position -= camera().up * flyspeed;
+                Vector3 velocity = Networking.LocalPlayer.GetVelocity();
+                velocity.y = Networking.LocalPlayer.GetJumpImpulse();
+                Networking.LocalPlayer.SetVelocity(velocity);
+            }
 
-                if (Input.GetAxis("Vertical") != 0f)
-                    VRC.Player.prop_Player_0.transform.position += camera().forward * (flyspeed * Input.GetAxis("Vertical"));
-
-                if (Input.GetAxis("Horizontal") != 0f)
-                    VRC.Player.prop_Player_0.transform.position += camera().transform.right * (flyspeed * Input.GetAxis("Horizontal"));
+            if (XRDevice.isPresent)
+            {
+                playerTransform.position += playerTransform.forward * Time.deltaTime * Input.GetAxis("Vertical") * Space;
+                playerTransform.position += playerTransform.right * Time.deltaTime * Input.GetAxis("Horizontal") * Space;
+                playerTransform.position += new Vector3(0f, Time.deltaTime * Input.GetAxis("Oculus_CrossPlatform_SecondaryThumbstickVertical") * Space);
+                if (VRCInputManager.Method_Public_Static_VRCInput_String_0("Jump").prop_Single_2 == 1f)
+                {                    
+                    playerTransform.position += new Vector3(0f, Time.deltaTime * Space, 0f);
+                }
             }
             else
             {
-                if (Input.GetKey(KeyCode.W))
-                    VRC.Player.prop_Player_0.transform.position += camera().forward * flyspeed;
+                var speed = Input.GetKey(KeyCode.LeftShift) ? Space * 9999999999999999999 : Space;
+                playerTransform.position += playerTransform.forward * Time.deltaTime * Input.GetAxis("Vertical") * speed;
+                playerTransform.position += playerTransform.right * Time.deltaTime * Input.GetAxis("Horizontal") * speed;
 
-                if (Input.GetKey(KeyCode.S))
-                    VRC.Player.prop_Player_0.transform.position -= camera().forward * flyspeed;
+                if (Input.GetKey(KeyCode.Space))
+                    playerTransform.position += new Vector3(0f, Time.deltaTime * speed, 0f);
 
-                if (Input.GetKey(KeyCode.A))
-                    VRC.Player.prop_Player_0.transform.position -= camera().right * (flyspeed / 2);
-
-                if (Input.GetKey(KeyCode.D))
-                    VRC.Player.prop_Player_0.transform.position += camera().right * (flyspeed / 2);
-
-                if (Input.GetKey(KeyCode.Q))
-                    VRC.Player.prop_Player_0.transform.position -= camera().up * (flyspeed / 2);
-
-                if (Input.GetKey(KeyCode.E))
-                    VRC.Player.prop_Player_0.transform.position += camera().up * (flyspeed / 2);
+                if (VRCInputManager.Method_Public_Static_VRCInput_String_0("Jump").prop_Single_2 == 1f)
+                {
+                    playerTransform.position += new Vector3(0f, Time.deltaTime * speed, 0f);
+                    playerTransform.position += new Vector3(0f, Time.deltaTime * Space, 0f);
+                }
             }
-        } */
+            _motionState?.Reset();
+        }
+
     }
 }
