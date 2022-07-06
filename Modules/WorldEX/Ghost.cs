@@ -21,6 +21,7 @@ namespace EXO.Modules
     internal class Ghost : BaseModule
     {
         internal static bool G_DeityMode;
+        internal static bool G_NoCoolDown;
         public override void OnQuickMenuInit()
         {
             var Ghost = new CollapsibleButtonGroup(MainModule.WorldEX, "<color=#9b0000>Ghost</color>");
@@ -28,6 +29,10 @@ namespace EXO.Modules
             {
                 G_DeityMode = value;
             });
+            new ToggleButton(Ghost, "No Reload", "Click To Shoot And Reload Automaticaly", "Go Back To Being Basic", (value) =>
+            {
+                G_NoCoolDown = value;
+            });                       
             new SingleButton(Ghost, "Bring Key", "Brings 3 Keys", () =>
             {
                 GameObject flag1 = GameObject.Find("PoliceStation_A/Functions/KeySpawn/Keys/Key");
@@ -209,27 +214,49 @@ namespace EXO.Modules
             {
                 GameObject.Find("DamageSync").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "BackStab");
                 GameObject.Find("DamageSync").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "BackStabDamage");                
-            });
-            new ToggleButton(Ghost, "Loop All Guns", "Makes All The Guns Shoot On A Loop", "Stops All guns From Shooting", (value) =>
+            });            
+            new ToggleButton(Ghost, "Infinite Ammo All", "Gives Everyone Infinite Ammo", "Go Back To Normal", (value) =>
             {
-                LoopShootState = value;
-                if (value) MelonLoader.MelonCoroutines.Start(LoopShootAllGuns());
+                InvinateAmmoState = value;
+                if (value) MelonLoader.MelonCoroutines.Start(InvinateAmmo());
             });
-        }
-        internal static bool LoopShootState;
-        internal static IEnumerator LoopShootAllGuns()
-        {
-            for (; ; )
+            new ToggleButton(Ghost, "Spam Shoot", "Spam Shoot All Weapons", "Stop", (value) =>
             {
-                SendUdonEventsWithName("Local_StartFiring");
-                yield return new WaitForSeconds(5f);
-                SendUdonEventsWithName("Local_EndFiring");
+                SpamShootState = value;
+                if (value) MelonLoader.MelonCoroutines.Start(GhostSpamShoot());
                 SendUdonEventsWithName("Local_StartReloading");
                 SendUdonEventsWithName("Local_FinishReloading");
-                yield return new WaitForSeconds(2f);
-                if (!LoopShootState)
+            });
+            new SingleButton(Ghost, "One Shot", "Forces All Guns To Shoot Once", () =>
+            {
+                SendUdonEventsWithName("Local_FireOneShot");
+            });                        
+            new SingleButton(Ghost, "Gun Delete", "Makes All Guns Invisible Other Than Newly Crafted Ones", () =>
+            {
+                SendUdonEventsWithName("Local_SetSpecialSkin");
+            });            
+        }
+        internal static bool SpamShootState;        
+        internal static bool InvinateAmmoState;
+        internal static IEnumerator GhostSpamShoot()
+        {
+            for (; ; )
+            {                
+                SendUdonEventsWithName("Local_FireOneShot");
+                yield return new WaitForSeconds(0f);
+                if (!SpamShootState)
                     yield break;
             }
         }
+        internal static IEnumerator InvinateAmmo()
+        {
+            for (; ; )
+            {                                
+                SendUdonEventsWithName("InitializeWeapon");
+                yield return new WaitForSeconds(1f);
+                if (!InvinateAmmoState)
+                    yield break;
+            }
+        }        
     }
 }

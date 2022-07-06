@@ -1,6 +1,7 @@
 ﻿using ConsoleLogger;
 using HarmonyLib;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -18,6 +19,7 @@ namespace EXO
 {
     public class Patches : BaseModule
     {
+        internal static UdonSync ___instance;
         public static HarmonyLib.Harmony instance;        
         private static HarmonyMethod GetLocalPatch(string methodName)
         {
@@ -35,12 +37,15 @@ namespace EXO
                 if (__0 == "NonPatronSkin" && __1.field_Private_APIUser_0.id == UserUtils.LocalDownload().field_Private_APIUser_0.id)
                     GameObject.Find("/Game Logic").transform.Find("Weapons/Revolver").gameObject.GetComponent<VRC.Udon.UdonBehaviour>().SendCustomNetworkEvent(0, "PatronSkin");
             }
+            /*
             else if (EXO.Modules.Murder4.M4_GoldGun)
                 if (__0 == "NonPatronSkin")
                     GameObject.Find("/Game Logic").transform.Find("Weapons/Revolver").gameObject.GetComponent<VRC.Udon.UdonBehaviour>().SendCustomNetworkEvent(0, "PatronSkin");
-
+            */
             if (EXO.Modules.Murder4.M4_NoCoolDown)
+            {
                 if (__0 == "SyncDryFire" && __1.field_Private_APIUser_0.id == UserUtils.LocalDownload().field_Private_APIUser_0.id)
+                {
                     switch (__instance.gameObject.name)
                     {
                         case "Revolver":
@@ -53,7 +58,10 @@ namespace EXO
                             GameObject.Find("Game Logic/Weapons/Unlockables/Luger (0)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.Owner, "Fire");
                             break;
                     }
+                }
+            }
             if (EXO.Modules.Murder4.M4_DeityMode)
+            {
                 if (__0 == "SyncKill")
                 {
                     if (__1.field_Private_APIUser_0.displayName != UserUtils.LocalDownload().DisplayName() && Vector3.Distance(VRCPlayer.field_Internal_Static_VRCPlayer_0.transform.position, __1.transform.position) > 3.5f)
@@ -62,7 +70,7 @@ namespace EXO
                     }
                     return false;
                 }
-                     
+            }        
             if (EXO.Modules.Ghost.G_DeityMode)
             {
                 if (__0.ToLower().Contains("hitdamage"))
@@ -91,8 +99,48 @@ namespace EXO
                     }
                     return false;
                 }
+            }            
+            if (EXO.Modules.Ghost.G_NoCoolDown)
+            {
+                if (__0.Contains("Local_EndFiring") && __1.field_Private_APIUser_0.id.Equals(UserUtils.LocalDownload().field_Private_APIUser_0.id))
+                {
+                    if (__instance.gameObject.name.Contains("T1-M1911"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");
+                    if (__instance.gameObject.name.Contains("T2-DesertEagle"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");
+                    if (__instance.gameObject.name.Contains("T2-m500"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");
+                    if (__instance.gameObject.name.Contains("T4-M107"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");
+                    if (__instance.gameObject.name.Contains("T2-MP7"))
+                    {
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "InitializeWeapon");
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
+                    }
+                    if (__instance.gameObject.name.Contains("T3-Vector"))
+                    {
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "InitializeWeapon");
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
+                    }
+                    if (__instance.gameObject.name.Contains("T3-P90"))
+                    {
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "InitializeWeapon");
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
+                    }
+                    if (__instance.gameObject.name.Contains("T4-M249"))
+                    {
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "InitializeWeapon");
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
+                    }                    
+                    if (__instance.gameObject.name.Contains("T3-Vector"))
+                    {
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "InitializeWeapon");
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
+                    }
+                }
             }
             if (EXO.Modules.PrisonEsc.P_DeityMode)
+            {
                 if (__0.ToLower().Contains("damage") && __1.field_Private_APIUser_0.id != UserUtils.LocalDownload().field_Private_APIUser_0.id)
                 {
                     if (__1.field_Private_APIUser_0.displayName != UserUtils.LocalDownload().DisplayName())
@@ -101,15 +149,16 @@ namespace EXO
                     }
                     return false;
                 }
-            if (__0.ToLower().Contains("damage") && __1.field_Private_APIUser_0.id == UserUtils.LocalDownload().field_Private_APIUser_0.id)
-            {
-                if (__1.field_Private_APIUser_0.displayName == UserUtils.LocalDownload().DisplayName())
+                if (__0.ToLower().Contains("damage") && __1.field_Private_APIUser_0.id == UserUtils.LocalDownload().field_Private_APIUser_0.id)
                 {
-                    CLog.L($"Prevented Damage From {__1.field_Private_APIUser_0.displayName}");
+                    if (__1.field_Private_APIUser_0.displayName == UserUtils.LocalDownload().DisplayName())
+                    {
+                        CLog.L($"Prevented Damage From {__1.field_Private_APIUser_0.displayName}");
+                    }
+                    return false;
                 }
-                return false;
             }
             return true;
-        }        
+        }       
     }
 }
