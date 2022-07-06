@@ -189,7 +189,7 @@ namespace EXO.Modules
                     flag2.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_HumanWin");
                 }
             });            
-            new SingleButton(Ghost, "+ Less Money", "Gives Everyone Money", () =>
+            new SingleButton(Ghost, "+30 Money All", "Gives Everyone Money", () =>
             {
                 GameObject.Find("GameManager").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "AltCurrency");
             });

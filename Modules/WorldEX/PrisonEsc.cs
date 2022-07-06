@@ -26,16 +26,22 @@ namespace EXO.Modules
     internal class PrisonEsc : BaseModule
     {
         internal static bool GoldLooper;
+        internal static bool P_DeityMode;
         public override void OnQuickMenuInit()
         {
             var Prison = new CollapsibleButtonGroup(MainModule.WorldEX, "<color=#9b0000>Prison Escape</color>");
 
-            new ToggleButton(Prison, "Gold Guns", "Make all guns Gold", "Disable", (value) =>
+            new ToggleButton(Prison, "Deity Mode", "Deity Mode On", "Deity Mode Off", (value) =>
+            {
+                P_DeityMode = value;
+                
+            });
+            new ToggleButton(Prison, "Gold Guns", "Make All Guns Gold", "Baisc Bitch", (value) =>
             {
                 GoldLooper = value;
                 if (value)
                     MelonCoroutines.Start(GoldLoop());
-            }).SetToggleState(false, true);
+            });
             new SingleButton(Prison, "Start Game", "Force Start The Game", () =>
             {
                 GameObject.Find("Scripts/Game Manager").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "StartGameCountdown");

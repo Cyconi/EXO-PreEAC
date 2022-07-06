@@ -20,7 +20,10 @@ namespace EXO.Modules
         public override void OnQuickMenuInit()
         {
             var AmongUs = new CollapsibleButtonGroup(MainModule.WorldEX, "<color=#9b0000>Among Us</color>");
-
+            new ToggleButton(AmongUs, "Deity Mode", "Turn On Deity Mode", "Turn Off Diety Mode", (value) =>
+            {
+                Murder4.M4_DeityMode = value;
+            });
             new SingleButton(AmongUs, "Task EarRape", "Gah My Ears!!", () =>
             {
                 SendUdonEventsWithName("CompleteTask");

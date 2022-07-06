@@ -92,6 +92,23 @@ namespace EXO
                     return false;
                 }
             }
+            if (EXO.Modules.PrisonEsc.P_DeityMode)
+                if (__0.ToLower().Contains("damage") && __1.field_Private_APIUser_0.id != UserUtils.LocalDownload().field_Private_APIUser_0.id)
+                {
+                    if (__1.field_Private_APIUser_0.displayName != UserUtils.LocalDownload().DisplayName())
+                    {
+                        CLog.L($"Prevented Damage From {__1.field_Private_APIUser_0.displayName}");
+                    }
+                    return false;
+                }
+            if (__0.ToLower().Contains("damage") && __1.field_Private_APIUser_0.id == UserUtils.LocalDownload().field_Private_APIUser_0.id)
+            {
+                if (__1.field_Private_APIUser_0.displayName == UserUtils.LocalDownload().DisplayName())
+                {
+                    CLog.L($"Prevented Damage From {__1.field_Private_APIUser_0.displayName}");
+                }
+                return false;
+            }
             return true;
         }        
     }
