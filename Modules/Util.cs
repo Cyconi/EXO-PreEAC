@@ -39,6 +39,36 @@ namespace EXO.Modules
                 GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
                 MelonCoroutines.Start(ESP.TriggerHighlight());
             });
+            new ToggleButton(Util, "Box Collider ESP", "Box Collider ESP On", "Box Collider ESP Off", (value) =>
+            {
+                ESP.BoxColESP = value;
+                GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
+                MelonCoroutines.Start(ESP.BoxColliderHighlight());
+            });
+            new ToggleButton(Util, "Player ESP", "Player ESP On", "Player ESP Off", (value) =>
+            {
+                ESP.CapsuleColESP = value;
+                GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
+                MelonCoroutines.Start(ESP.CapsuleColliderHighlight());
+            });
+            new ToggleButton(Util, "Udon ESP", "Udon ESP On", "Udon ESP Off", (value) =>
+            {
+                ESP.UdonESP = value;
+                GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
+                MelonCoroutines.Start(ESP.UdonHighlight());
+            });
+            new ToggleButton(Util, "Interactable ESP", "Interactable ESP On", "Interactable ESP Off", (value) =>
+            {
+                ESP.InterESP = value;
+                GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
+                MelonCoroutines.Start(ESP.InteractableHighlight());
+            });
+            new ToggleButton(Util, "Rigidbody ESP", "Rigidbody ESP On", "Rigidbody ESP Off", (value) =>
+            {
+                ESP.RigidbodyESP = value;
+                GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
+                MelonCoroutines.Start(ESP.RigidbodyHighlight());
+            });
             new ToggleButton(Util, "Mesh ESP [Broken]", "Mesh ESP On", "Mesh ESP Off", (value) =>
             {
                 if (value)

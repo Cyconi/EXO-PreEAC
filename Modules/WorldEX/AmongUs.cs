@@ -87,6 +87,11 @@ namespace EXO.Modules
                 EarRapeState = value;
                 if (value) MelonLoader.MelonCoroutines.Start(EarRapeLoop());
             });
+            new ToggleButton(AmongUs, "Perm Card Swipe", "Coping", "Is it over?", (value) =>
+            {
+                CardSwipeState = value;
+                if (value) MelonLoader.MelonCoroutines.Start(CardSwipeLoop());
+            });
             new SingleButton(AmongUs, "Vote Out All", "XD Goodbye", () =>
             {
                 for (int i = 0; i < 25; i++)
@@ -99,6 +104,7 @@ namespace EXO.Modules
                 }
             });
         }
+        internal static bool CardSwipeState;
         internal static bool KillAllStateA;
         internal static bool KillScreenStateA;
         internal static bool SkipVoteState;
@@ -153,10 +159,20 @@ namespace EXO.Modules
                     yield break;
             }
         }
-        internal static IEnumerator EarRapeLoop()
+        internal static IEnumerator CardSwipeLoop()
         {
             for (; ; )
             {
+                GameObject.Find("Game Logic/Tasks/Task Card Swipe").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "AssignTask");
+                yield return new WaitForSeconds(0.1f);
+                if (!CardSwipeState)
+                    yield break;
+            }
+        }
+        internal static IEnumerator EarRapeLoop()
+        {
+            for (; ; )
+            {                
                 SendUdonEventsWithName("CompleteTask");
                 yield return new WaitForSeconds(0.1f);
                 if (!EarRapeState)
