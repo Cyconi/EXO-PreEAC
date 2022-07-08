@@ -10,6 +10,8 @@ using Wrapper.WorldWrapper;
 using VRC.SDKBase;
 using VRC.SDK3.Components;
 using VRCSDK2;
+using UnhollowerBaseLib;
+using Wrapper.PlayerWrapper;
 
 namespace EXO
 {
@@ -18,25 +20,26 @@ namespace EXO
         internal static bool ItemESP;
         internal static bool TriggerESP;
         internal static bool BoxColESP;
-        internal static bool CapsuleColESP;
+        internal static bool CapsuleESP;
         internal static bool RigidbodyESP;
         internal static bool UdonESP;
         internal static bool InterESP;
+        internal static bool MeshESP;
 
         public static IEnumerator ItemHighlight()
         {
-            var array = UnityEngine.Object.FindObjectsOfType<VRCSDK2.VRC_Pickup>();
-            var AllUdonPickups = UnityEngine.Object.FindObjectsOfType<VRC.SDK3.Components.VRCPickup>();
-            var AllBaseUdonPickups = UnityEngine.Object.FindObjectsOfType<VRC.SDKBase.VRC_Pickup>();
-            var AllSyncPickups = UnityEngine.Object.FindObjectsOfType<VRC_ObjectSync>();
-            var AllSDK3SyncPickups = UnityEngine.Object.FindObjectsOfType <VRC.SDK3.Components.VRCObjectSync>();
-            var SyncPhys = UnityEngine.Object.FindObjectsOfType<SyncPhysics>();
+            var array = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Pickup>();
+            var AllUdonPickups = Resources.FindObjectsOfTypeAll<VRC.SDK3.Components.VRCPickup>();
+            var AllBaseUdonPickups = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Pickup>();
+            var AllSyncPickups = Resources.FindObjectsOfTypeAll<VRC_ObjectSync>();
+            var AllSDK3SyncPickups = Resources.FindObjectsOfTypeAll<VRC.SDK3.Components.VRCObjectSync>();            
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;
-
+            
             for (; ; )
-            {
+            {                                              
+
                 for (int i = 0; i < array.Length; i++)
                     try
                     {
@@ -60,6 +63,7 @@ namespace EXO
                     }
                     catch { }
                 for (int i = 0; i < AllBaseUdonPickups.Length; i++)
+
                     try
                     {
                         if (AllBaseUdonPickups[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
@@ -92,28 +96,17 @@ namespace EXO
                             }
                     }
                     catch { }
-                for (int i = 0; i < SyncPhys.Length; i++)
-                    try
-                    {
-                        if (SyncPhys[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (SyncPhys[i].GetComponent<MeshRenderer>() != null)
-                            {
-                                var render = SyncPhys[i].GetComponent<MeshRenderer>();
-                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, ItemESP);
-                            }
-                    }
-                    catch { }
 
                 if (!ItemESP)
                     yield break;
 
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.1f);
             }
         }
         public static IEnumerator TriggerHighlight()
         {
-            var AllTriggers = UnityEngine.Object.FindObjectsOfType<VRC.SDKBase.VRC_Trigger>();
-            var AllSDK2Triggers = UnityEngine.Object.FindObjectsOfType<VRCSDK2.VRC_Trigger>();
+            var AllTriggers = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Trigger>();
+            var AllSDK2Triggers = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Trigger>();
             
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
@@ -153,8 +146,8 @@ namespace EXO
 
         public static IEnumerator BoxColliderHighlight()
         {
-            var BoxCol = UnityEngine.Object.FindObjectsOfType<UnityEngine.BoxCollider>();
-            var BoxCol2D = UnityEngine.Object.FindObjectsOfType<UnityEngine.BoxCollider2D>();
+            var BoxCol = Resources.FindObjectsOfTypeAll<UnityEngine.BoxCollider>();
+            var BoxCol2D = Resources.FindObjectsOfTypeAll<UnityEngine.BoxCollider2D>();
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;
@@ -189,38 +182,37 @@ namespace EXO
 
                 yield return new WaitForSeconds(0.01f);
             }
-        }
-        public static IEnumerator CapsuleColliderHighlight()
+        }        
+        public static void HighlightPlayer(VRC.Player player, bool state)
         {
-            var CapsuleCol = UnityEngine.Object.FindObjectsOfType<UnityEngine.CapsuleCollider>();            
+            Renderer renderer;
+            if (player == null)
+                renderer = null;
 
-            while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
-                yield return null;
-
-            for (; ; )
+            else
             {
-                for (int i = 0; i < CapsuleCol.Length; i++)
-                    try
-                    {
-                        if (CapsuleCol[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (CapsuleCol[i].GetComponent<MeshRenderer>() != null)
-                            {
-                                var render = CapsuleCol[i].GetComponent<MeshRenderer>();
-                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, CapsuleColESP);
-                            }
-                    }
-                    catch { }                
+                Transform transform = player.transform.Find("SelectRegion");
+                renderer = ((transform != null) ? transform.GetComponent<Renderer>() : null);
+                Renderer renderer2 = renderer;
+                if (renderer2)
+                    HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(renderer2, state);
 
-                if (!CapsuleColESP)
-                    yield break;
-
-                yield return new WaitForSeconds(0.01f);
+            }
+        }
+        public static void PlayerMeshEsp(VRC.Player player, bool State)
+        {
+            var id = player.prop_APIUser_0.id;
+            if (id == null || id == PlayerWrapper.GetPlayer().prop_APIUser_0.id) return;
+            var Renderer = player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>())
+            {
+                HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(renderer, State);
             }
         }
         public static IEnumerator RigidbodyHighlight()
         {
-            var Rigidbody = UnityEngine.Object.FindObjectsOfType<UnityEngine.Rigidbody>();
-            var Rigidbody2D = UnityEngine.Object.FindObjectsOfType<UnityEngine.Rigidbody2D>();
+            var Rigidbody = Resources.FindObjectsOfTypeAll<UnityEngine.Rigidbody>();
+            var Rigidbody2D = Resources.FindObjectsOfTypeAll<UnityEngine.Rigidbody2D>();
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;
@@ -258,10 +250,10 @@ namespace EXO
         }
         public static IEnumerator UdonHighlight()
         {
-            var UdonBehaviours = UnityEngine.Object.FindObjectsOfType<VRC.Udon.UdonBehaviour>();
-            var UdonSync = UnityEngine.Object.FindObjectsOfType<VRC.Networking.UdonSync>();
-            var Photon = UnityEngine.Object.FindObjectsOfType<Photon.Pun.PhotonView>();
-            var PhotonHandle = UnityEngine.Object.FindObjectsOfType<Photon.Pun.PhotonHandler>();
+            var UdonBehaviours = Resources.FindObjectsOfTypeAll<VRC.Udon.UdonBehaviour>();
+            var UdonSync = Resources.FindObjectsOfTypeAll<VRC.Networking.UdonSync>();
+            var Photon = Resources.FindObjectsOfTypeAll<Photon.Pun.PhotonView>();
+            var PhotonHandle = Resources.FindObjectsOfTypeAll<Photon.Pun.PhotonHandler>();
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;
@@ -321,9 +313,9 @@ namespace EXO
         }
         public static IEnumerator InteractableHighlight()
         {
-            var AllInteractable = UnityEngine.Object.FindObjectsOfType<VRCInteractable>();
-            var AllBaseInteractable = UnityEngine.Object.FindObjectsOfType<VRC.SDKBase.VRC_Interactable>();
-            var AllSDK2Interactable = UnityEngine.Object.FindObjectsOfType<VRCSDK2.VRC_Interactable>();
+            var AllInteractable = Resources.FindObjectsOfTypeAll<VRCInteractable>();
+            var AllBaseInteractable = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Interactable>();
+            var AllSDK2Interactable = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Interactable>();
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;

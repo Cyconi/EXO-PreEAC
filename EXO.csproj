@@ -706,7 +706,8 @@
     <Compile Include="Modules\PlayerSelect.cs" />
     <Compile Include="Modules\WorldEX\PrisonEsc.cs" />
     <Compile Include="Modules\WorldEX\WorldExploits.cs" />
-    <Compile Include="Patches.cs" />
+    <Compile Include="Patch\JoinLeave.cs" />
+    <Compile Include="Patch\Patches.cs" />
     <Compile Include="Wrappers\PlayerWrapper.cs" />
     <Compile Include="MainModule.cs" />
     <Compile Include="ConsoleLogger.cs" />

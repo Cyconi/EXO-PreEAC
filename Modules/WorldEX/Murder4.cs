@@ -1,4 +1,4 @@
-﻿using ConsoleLogger;
+﻿
 using static EXO_Udon.UdonStuff;
 using MelonLoader;
 using System;

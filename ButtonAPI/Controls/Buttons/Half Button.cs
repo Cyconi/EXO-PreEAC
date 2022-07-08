@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using ConsoleLogger;
 using UnityEngine.UI;
 
 namespace xButtonAPI.Controls
@@ -27,9 +26,9 @@ namespace xButtonAPI.Controls
                 }
                 catch (Exception r)
                 {
-                    CLog.E($"ERROR With Btn {text} : : {r}");
+                    EXO.CLog.E($"ERROR With Btn {text} : : {r}");
                 }
-                CLog.L($"Pressed on [{text}]");
+                EXO.CLog.L($"Pressed on [{text}]");
             }));
             instanciated.transform.Find("Text_H4").gameObject.GetComponent<TMPro.TextMeshProUGUI>().text = text;
             instanciated.transform.Find("Text_H4").gameObject.GetComponent<TMPro.TextMeshProUGUI>().fontSize = 22;
@@ -107,9 +106,9 @@ namespace xButtonAPI.Controls
                     OnImage.active = val;
                 }
                 catch (Exception r) {
-                    CLog.E($"ERROR With Toggle {text} : : {r}");
+                    EXO.CLog.E($"ERROR With Toggle {text} : : {r}");
                 }
-                CLog.L($"Pressed on [{text}]");
+                EXO.CLog.L($"Pressed on [{text}]");
             }));
 
             if (!string.IsNullOrEmpty(Ontooltip)) {

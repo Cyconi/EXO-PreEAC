@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using xButtonAPI.Controls;
 using xButtonAPI.Controls.Grouping;
-using ConsoleLogger;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using VRC;
@@ -237,89 +236,31 @@ namespace EXO.Modules
             new SingleButton(Ghost, "Gun Delete", "Makes All Guns Invisible Other Than Newly Crafted Ones", () =>
             {
                 SendUdonEventsWithName("Local_SetSpecialSkin");
-            });
-            new SingleButton(Ghost, "playerObj ", "Local_UpdateHumanMark", () =>
+            });            
+            new SingleButton(Ghost, "Nuke", "Nuke", () =>
             {
-                GameObject.Find("GameManager/PlayerObjectList/Human/PlayerCharacterObject").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_UpdateHumanMark");
-                for (int i = 0; i < 21; i++)
-                {
-                    GameObject flag = GameObject.Find("GameManager/PlayerObjectList/Human/PlayerCharacterObject (" + i.ToString() + ")");
-                    if (flag)
+                var Gameobj = GameObject.Find("GameManager/PlayerObjectList/Human");
+
+                foreach (Transform transform in Gameobj.GetComponentsInChildren<Transform>())
+                    if (transform.name != Gameobj.name && transform.name.Contains("PlayerCharacterObject") && transform.gameObject.GetComponent<UdonBehaviour>() != null)
                     {
-                        flag.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_UpdateHumanMark");
+                        var Nuke = transform.GetComponent<UdonBehaviour>()._eventTable.Keys;
+                        foreach (var key in Nuke)
+                        {
+                            CLog.L(key);
+                            transform.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, key);                            
+                        }
                     }
-                }
             });
-            new SingleButton(Ghost, "playerObj ", "Local_ActiveHuntMark", () =>
+            new SingleButton(Ghost, "Nuke OBJ", "Nuke", () =>
             {
-                GameObject.Find("GameManager/PlayerObjectList/Human/PlayerCharacterObject").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_ActiveHuntMark");
-                for (int i = 0; i < 21; i++)
+                var Gameobj = GameObject.Find("LobbyManager");
+                var Nuke = Gameobj.GetComponent<UdonBehaviour>()._eventTable.Keys;
+                
+                foreach (var key in Nuke)
                 {
-                    GameObject flag = GameObject.Find("GameManager/PlayerObjectList/Human/PlayerCharacterObject (" + i.ToString() + ")");
-                    if (flag)
-                    {
-                        flag.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_ActiveHuntMark");
-                    }
-                }
-            });
-            new SingleButton(Ghost, "playerObj 2", "Initialize", () =>
-            {
-                GameObject.Find("GameManager/PlayerObjectList/Human/PlayerCharacterObject").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Initialize");
-                for (int i = 0; i < 21; i++)
-                {
-                    GameObject flag = GameObject.Find("GameManager/PlayerObjectList/Human/PlayerCharacterObject (" + i.ToString() + ")");
-                    if (flag)
-                    {
-                        flag.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Initialize");
-                    }
-                }
-            });
-            new SingleButton(Ghost, "playerObj 3", "Local_EnableHeroBuff", () =>
-            {
-                GameObject.Find("GameManager/PlayerObjectList/Human/PlayerCharacterObject").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_EnableHeroBuff");
-                for (int i = 0; i < 21; i++)
-                {
-                    GameObject flag = GameObject.Find("GameManager/PlayerObjectList/Human/PlayerCharacterObject (" + i.ToString() + ")");
-                    if (flag)
-                    {
-                        flag.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_EnableHeroBuff");
-                    }
-                }
-            });
-            new SingleButton(Ghost, "player Spectate", "RegisterPlayer", () =>
-            {
-                GameObject.Find("PoliceStation(Spectate)/Players/SpectatePlayer").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "RegisterPlayer");
-                for (int i = 0; i < 21; i++)
-                {
-                    GameObject flag = GameObject.Find("PoliceStation(Spectate)/Players/SpectatePlayer (" + i.ToString() + ")");
-                    if (flag)
-                    {
-                        flag.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "RegisterPlayer");
-                    }
-                }
-            });
-            new SingleButton(Ghost, "player Spectate 2", "UpdateIdentity", () =>
-            {
-                GameObject.Find("PoliceStation(Spectate)/Players/SpectatePlayer").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "UpdateIdentity");
-                for (int i = 0; i < 21; i++)
-                {
-                    GameObject flag = GameObject.Find("PoliceStation(Spectate)/Players/SpectatePlayer (" + i.ToString() + ")");
-                    if (flag)
-                    {
-                        flag.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "UpdateIdentity");
-                    }
-                }
-            });
-            new SingleButton(Ghost, "player Spectate 3", "SetHero", () =>
-            {
-                GameObject.Find("PoliceStation(Spectate)/Players/SpectatePlayer").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "SetHero");
-                for (int i = 0; i < 21; i++)
-                {
-                    GameObject flag = GameObject.Find("PoliceStation(Spectate)/Players/SpectatePlayer (" + i.ToString() + ")");
-                    if (flag)
-                    {
-                        flag.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "SetHero");
-                    }
+                    CLog.L(key);
+                    Gameobj.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, key);
                 }
             });
         }

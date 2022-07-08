@@ -1,5 +1,4 @@
-﻿using ConsoleLogger;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -233,16 +232,7 @@ namespace Wrapper.PlayerWrapper
 
         }
         //added
-        public static void PlayerMeshEsp(VRC.Player player, bool State)
-        {
-            var id = player.prop_APIUser_0.id;
-            if (id == null || id == GetPlayer().prop_APIUser_0.id) return;
-            var Renderer = player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>();
-            foreach (Renderer renderer in player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>())
-            {
-                HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(renderer, State);
-            }
-        }
+        
         //
         public static Player GetPlayerByActorID(int actorId)
         {

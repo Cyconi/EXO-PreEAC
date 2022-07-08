@@ -1,7 +1,6 @@
 ﻿using xButtonAPI.Controls;
 using xButtonAPI.Controls.Grouping;
 using xButtonAPI.Pages;
-using ConsoleLogger;
 using System.Diagnostics;
 using UnityEngine;
 using System.IO;

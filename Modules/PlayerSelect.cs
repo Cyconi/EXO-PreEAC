@@ -9,7 +9,6 @@ using VRC.Udon;
 using VRC.Udon.Common.Interfaces;
 using xButtonAPI.Controls;
 using xButtonAPI.Controls.Grouping;
-using ConsoleLogger;
 using UnityEngine.UI;
 using MelonLoader;
 using VRC.UI.Elements.Menus;

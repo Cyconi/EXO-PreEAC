@@ -13,7 +13,6 @@ using xButtonAPI.Misc;
 using xButtonAPI.Pages;
 using UnityEngine.UI;
 using VRC.SDKBase;
-using ConsoleLogger;
 using MelonLoader;
 using VRC;
 using Object = UnityEngine.Object;

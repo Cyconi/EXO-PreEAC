@@ -1,4 +1,4 @@
-﻿using ConsoleLogger;
+﻿
 using HarmonyLib;
 using System;
 using System.Collections;
@@ -29,6 +29,7 @@ namespace EXO
         {
             instance = new HarmonyLib.Harmony("EXO");
             instance.Patch(typeof(UdonSync).GetMethod("UdonSyncRunProgramAsRPC"), GetLocalPatch("ForceUdon"));
+            Patch.JoinLeave.StartPatch();
         }
         private static bool ForceUdon(string __0, VRC.Player __1, UdonSync __instance)
         {

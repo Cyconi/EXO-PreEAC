@@ -9,7 +9,6 @@ using xButtonAPI.Controls.Grouping;
 using xButtonAPI.Pages;
 using xButtonAPI;
 using xButtonAPI.Misc;
-using ConsoleLogger;
 using System.IO;
 using System.Net;
 using System.Net.Http;
@@ -67,22 +66,22 @@ namespace EXO.Modules
             {
                 case 1:
                     Pos1 = LocalDownload().gameObject.transform.position;
-                    ConsoleLogger.CLog.L($"Save Position {LocalDownload().gameObject.transform.position.ToString()} To Slot {slot}", ConsoleColor.Green);
+                    CLog.L($"Save Position {LocalDownload().gameObject.transform.position.ToString()} To Slot {slot}", ConsoleColor.Green);
                     Rot1 = LocalDownload().gameObject.transform.rotation;
                     break;
                 case 2:
                     Pos2 = LocalDownload().gameObject.transform.position;
-                    ConsoleLogger.CLog.L($"Save Position {LocalDownload().gameObject.transform.position.ToString()} To Slot {slot}", ConsoleColor.Green);
+                    CLog.L($"Save Position {LocalDownload().gameObject.transform.position.ToString()} To Slot {slot}", ConsoleColor.Green);
                     Rot2 = LocalDownload().gameObject.transform.rotation;
                     break;
                 case 3:
                     Pos3 = LocalDownload().gameObject.transform.position;
-                    ConsoleLogger.CLog.L($"Save Position {LocalDownload().gameObject.transform.position.ToString()} To Slot {slot}", ConsoleColor.Green);
+                    CLog.L($"Save Position {LocalDownload().gameObject.transform.position.ToString()} To Slot {slot}", ConsoleColor.Green);
                     Rot3 = LocalDownload().gameObject.transform.rotation;
                     break;
                 case 4:
                     Pos4 = LocalDownload().gameObject.transform.position;
-                    ConsoleLogger.CLog.L($"Save Position {LocalDownload().gameObject.transform.position.ToString()} To Slot {slot}", ConsoleColor.Green);
+                    CLog.L($"Save Position {LocalDownload().gameObject.transform.position.ToString()} To Slot {slot}", ConsoleColor.Green);
                     Rot4 = LocalDownload().gameObject.transform.rotation;
                     break;
             }

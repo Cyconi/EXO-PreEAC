@@ -1,5 +1,4 @@
-﻿using ConsoleLogger;
-using MelonLoader;
+﻿using MelonLoader;
 using System;
 using System.Collections;
 using System.Collections.Generic;
