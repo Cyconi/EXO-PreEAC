@@ -60,15 +60,16 @@ namespace EXO.Patch
 
             return true;
         }
-
+                      
         internal static void OnPlayerJoin(VRC.Player __0)
         {
             if (ESP.CapsuleESP)
-                ESP.HighlightPlayer(__0, ESP.CapsuleESP);                
-            if (ESP.MeshESP)
-                ESP.PlayerMeshEsp(__0, ESP.MeshESP);
-        }
-
+                ESP.CapsuleHighlight(__0, true);                
+            if (ESP.MeshESP)            
+                ESP.MeshHighlight(__0, true);
+            
+                
+        }        
         internal static void OnPlayerLeave(VRC.Player __0)
         {
 

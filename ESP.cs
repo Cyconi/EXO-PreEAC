@@ -27,53 +27,42 @@ namespace EXO
         internal static bool MeshESP;
 
         public static IEnumerator ItemHighlight()
-        {
-            var array = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Pickup>();
-            var AllUdonPickups = Resources.FindObjectsOfTypeAll<VRC.SDK3.Components.VRCPickup>();
-            var AllBaseUdonPickups = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Pickup>();
+        {                                                            
+            Il2CppArrayBase<VRC.SDKBase.VRC_Pickup> AllBaseUdonPickups = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Pickup>();
+            Il2CppArrayBase<VRCSDK2.VRC_Pickup> array = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Pickup>();
+            Il2CppArrayBase<VRCPickup> AllUdonPickups = Resources.FindObjectsOfTypeAll<VRCPickup>();
             var AllSyncPickups = Resources.FindObjectsOfTypeAll<VRC_ObjectSync>();
-            var AllSDK3SyncPickups = Resources.FindObjectsOfTypeAll<VRC.SDK3.Components.VRCObjectSync>();            
+            var AllSDK3SyncPickups = Resources.FindObjectsOfTypeAll<VRCObjectSync>();
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;
             
             for (; ; )
-            {                                              
-
-                for (int i = 0; i < array.Length; i++)
-                    try
+            {                
+                foreach (VRC.SDKBase.VRC_Pickup vrc_Pickup in AllBaseUdonPickups)
+                {
+                    bool Object = !(vrc_Pickup == null) && !(vrc_Pickup.gameObject == null) && vrc_Pickup.gameObject.active && vrc_Pickup.enabled && vrc_Pickup.pickupable && !vrc_Pickup.name.Contains("ViewFinder") && !(HighlightsFX.prop_HighlightsFX_0 == null);
+                    if (Object)
                     {
-                        if (array[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (array[i].GetComponent<MeshRenderer>() != null)
-                            {
-                                var render = array[i].GetComponent<MeshRenderer>();
-                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, ItemESP);
-                            }
+                        HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(vrc_Pickup.GetComponentInChildren<MeshRenderer>(), ItemESP);
                     }
-                    catch { }
-                for (int i = 0; i < AllUdonPickups.Length; i++)
-                    try
+                }
+                foreach (VRCSDK2.VRC_Pickup vrc_Pickup in array)
+                {
+                    bool Object = !(vrc_Pickup == null) && !(vrc_Pickup.gameObject == null) && vrc_Pickup.gameObject.active && vrc_Pickup.enabled && vrc_Pickup.pickupable && !vrc_Pickup.name.Contains("ViewFinder") && !(HighlightsFX.prop_HighlightsFX_0 == null);
+                    if (Object)
                     {
-                        if (AllUdonPickups[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (AllUdonPickups[i].GetComponent<MeshRenderer>() != null)
-                            {
-                                var render = AllUdonPickups[i].GetComponent<MeshRenderer>();
-                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, ItemESP);
-                            }
+                        HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(vrc_Pickup.GetComponentInChildren<MeshRenderer>(), ItemESP);
                     }
-                    catch { }
-                for (int i = 0; i < AllBaseUdonPickups.Length; i++)
-
-                    try
+                }
+                foreach (VRCPickup vrc_Pickup in AllUdonPickups)
+                {
+                    bool Object = !(vrc_Pickup == null) && !(vrc_Pickup.gameObject == null) && vrc_Pickup.gameObject.active && vrc_Pickup.enabled && vrc_Pickup.pickupable && !vrc_Pickup.name.Contains("ViewFinder") && !(HighlightsFX.prop_HighlightsFX_0 == null);
+                    if (Object)
                     {
-                        if (AllBaseUdonPickups[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (AllBaseUdonPickups[i].GetComponent<MeshRenderer>() != null)
-                            {
-                                var render = AllBaseUdonPickups[i].GetComponent<MeshRenderer>();
-                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, ItemESP);
-                            }
+                        HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(vrc_Pickup.GetComponentInChildren<MeshRenderer>(), ItemESP);
                     }
-                    catch { }
+                }
                 for (int i = 0; i < AllSyncPickups.Length; i++)
                     try
                     {
@@ -140,7 +129,7 @@ namespace EXO
                 if (!TriggerESP)
                     yield break;
 
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.1f);
             }
         }
 
@@ -180,10 +169,10 @@ namespace EXO
                 if (!BoxColESP)
                     yield break;
 
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.1f);
             }
         }        
-        public static void HighlightPlayer(VRC.Player player, bool state)
+        public static void CapsuleHighlight(VRC.Player player, bool state)
         {
             Renderer renderer;
             if (player == null)
@@ -199,15 +188,32 @@ namespace EXO
 
             }
         }
-        public static void PlayerMeshEsp(VRC.Player player, bool State)
+        public static void MeshHighlight(VRC.Player player, bool State)
         {
             var id = player.prop_APIUser_0.id;
             if (id == null || id == PlayerWrapper.GetPlayer().prop_APIUser_0.id) return;
-            var Renderer = player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>();
             foreach (Renderer renderer in player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>())
             {
                 HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(renderer, State);
             }
+        }
+        internal static void PlayerMeshHighlight()
+        {
+            if (!MeshESP) return;                        
+            try
+            {
+                List<VRC.Player>.Enumerator player = PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList().GetEnumerator();
+                if (player.Current.prop_APIUser_0 == null && player.Current) return;
+                while (player.MoveNext())
+                {
+                    MeshHighlight(player.Current, false);
+                }
+            }
+            catch { }
+        }
+        public void OnUpdate()
+        {
+            PlayerMeshHighlight();
         }
         public static IEnumerator RigidbodyHighlight()
         {
@@ -245,7 +251,7 @@ namespace EXO
                 if (!RigidbodyESP)
                     yield break;
 
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.1f);
             }
         }
         public static IEnumerator UdonHighlight()
@@ -308,7 +314,7 @@ namespace EXO
                 if (!UdonESP)
                     yield break;
 
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.1f);
             }
         }
         public static IEnumerator InteractableHighlight()
@@ -359,7 +365,7 @@ namespace EXO
                 if (!InterESP)
                     yield break;
 
-                yield return new WaitForSeconds(0.01f);
+                yield return new WaitForSeconds(0.1f);
             }
         }
     }

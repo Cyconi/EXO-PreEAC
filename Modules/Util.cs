@@ -11,12 +11,19 @@ using UnityEngine;
 using System.Collections;
 using MelonLoader;
 using UnityEngine.SceneManagement;
+using EXO.Patch;
 
 namespace EXO.Modules
 {
     internal class Util : BaseModule
     {
-        internal static ToggleButton ToggleBtn;        
+        internal static ToggleButton ToggleBtn;
+
+        public void OnPlayerJoin(Player player)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void OnQuickMenuInit()
         {
             var Util = new ButtonGroup(MainModule.Util, "<color=#9b0000>Utilities</color>");
@@ -49,14 +56,15 @@ namespace EXO.Modules
                 ESP.CapsuleESP = value;
                 GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
                 foreach (VRC.Player player in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
-                    ESP.HighlightPlayer(player, value);
+                    ESP.CapsuleHighlight(player, value);
+                
             });
-            new ToggleButton(Util, "Player Mesh ESP", "Player Mesh ESP On", "Player Mesh ESP Off", (value) =>
+            new ToggleButton(Util, "[Broken] Mesh ESP", "Player Mesh ESP On", "Player Mesh ESP Off", (value) =>
             {
                 ESP.MeshESP = value;
                 GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
                 foreach (VRC.Player player in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
-                    ESP.PlayerMeshEsp(player, value);
+                    ESP.MeshHighlight(player, value);                
             });
             new ToggleButton(Util, "Box Collider ESP", "Box Collider ESP On", "Box Collider ESP Off", (value) =>
             {
@@ -78,7 +86,6 @@ namespace EXO.Modules
             });            
             new ToggleButton(Util, "Toggle Maker", "Make New Toggle", "Get rid Of Toggle", (value) =>
             {
-
                     ToggleBtn.SetActive(value);                
             });
             ToggleBtn = new ToggleButton(Util, "Toggle Button test1", "toggle buttons1", "toggle Button1", (value) =>
