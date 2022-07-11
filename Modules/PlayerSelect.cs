@@ -184,7 +184,7 @@ namespace EXO.Modules
                 CLog.L($"{Target.DisplayName()} Is In An Endless Death Loop!");
                 KillState = value;
                 if (value) MelonLoader.MelonCoroutines.Start(KillLoop());
-            });
+            });            
             new ToggleButton(PlayerSel, "Kill Screen", "Get Fucked No See", "Ok you can see now", (value) =>
             {
                 Target = GetSelPlayer();
@@ -193,7 +193,7 @@ namespace EXO.Modules
                 if (value) MelonLoader.MelonCoroutines.Start(KillScreenLoop());
             });            
         }
-        internal static bool KillState;
+        internal static bool KillState;        
         internal static bool KillScreenState;
         internal static bool ExplodeState;
         internal static IEnumerator ExplodeLoop()
@@ -258,7 +258,7 @@ namespace EXO.Modules
                 if (!KillState)
                     yield break;
             }
-        }
+        }        
         internal static IEnumerator KillScreenLoop() //M4 and AmongUs
         {
             for (; ; )
@@ -280,7 +280,6 @@ namespace EXO.Modules
                 if (!KillScreenState)
                     yield break;
             }
-        }
-        
+        }        
     }
 }

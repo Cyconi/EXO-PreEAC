@@ -5,6 +5,12 @@ using System.Diagnostics;
 using UnityEngine;
 using System.IO;
 using EXO.Hornet;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using xButtonAPI.Misc;
+using Wrapper.WorldWrapper;
 
 namespace EXO
 {
@@ -39,8 +45,7 @@ namespace EXO
             }, new Vector3(136.764f, 439.54f, 0));
             HalfButton.SingleHalfButton(Page.page.gameObject, "<color=#9b0000>Restart</color>", "Restarts Your Game", delegate 
             {
-                Process.Start(Directory.GetCurrentDirectory() + "\\VRChat.exe");
-                Process.GetCurrentProcess().Kill();
+                Restart(true);
             }, new Vector3(357.9432f, 439.54f, 0));
 
             //MainButtons
@@ -67,6 +72,40 @@ namespace EXO
             });
             EXO.Modules.WorldExploits.RunFirst();
             EXO.Modules.Murder4.RunFirst();
+        }
+        internal static void Restart(bool Rejoin = false, bool WithArgs = true)
+        {
+            MelonLoader.MelonCoroutines.Start(RestartRun(Rejoin, WithArgs));
+        }
+        public static IEnumerator RestartRun(bool Rejoin, bool WithArgs)
+        {
+            string Args = "";
+            List<string> ts = new List<string>();
+            ts = Environment.GetCommandLineArgs().ToList();
+            string Path = Environment.GetCommandLineArgs().ToList().First(); // Grab the Path
+            ts.Remove(Path); // Remove From Args
+            foreach (var Arg in ts) // Grab all and Format Right
+                if (!Arg.Contains("vrchat:"))
+                    Args = Args + $" {Arg}";
+
+            bool Wait;
+            if (Rejoin)
+            {
+                Wait = true;
+                xButtonAPI.xButtonAPI.GetQuickMenuInstance().ShowConfirmDialog("<color=#9b0000>EXO</color>", "<color=#9b0000>Would You Like To Rejoin The World?</color>", () =>
+                {
+                    Rejoin = true;
+                    Wait = false;
+                }, () =>
+                {
+                    Rejoin = false;
+                    Wait = false;
+                }, false, "<color=#9b0000>Yes</color>", "<color=#9b0000>No</color>");
+                while (Wait)
+                    yield return new WaitForSeconds(0.3f);
+            }
+            Process.Start(Directory.GetCurrentDirectory() + "\\VRChat.exe", (WithArgs ? Args : "") + (Rejoin ? $" vrchat://launch?id={WorldWrapper.Current_World_ID}" : ""));
+            Process.GetCurrentProcess().Kill();
         }
     }
 }

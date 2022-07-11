@@ -709,7 +709,7 @@
     <Compile Include="Patch\JoinLeave.cs" />
     <Compile Include="Patch\Patches.cs" />
     <Compile Include="Wrappers\PlayerWrapper.cs" />
-    <Compile Include="MainModule.cs" />
+    <Compile Include="Modules\MainModule.cs" />
     <Compile Include="ConsoleLogger.cs" />
     <Compile Include="BaseModule.cs" />
     <Compile Include="Melon\Overrider.cs" />

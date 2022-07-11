@@ -38,11 +38,7 @@ namespace EXO
                 if (__0 == "NonPatronSkin" && __1.field_Private_APIUser_0.id == UserUtils.LocalDownload().field_Private_APIUser_0.id)
                     GameObject.Find("/Game Logic").transform.Find("Weapons/Revolver").gameObject.GetComponent<VRC.Udon.UdonBehaviour>().SendCustomNetworkEvent(0, "PatronSkin");
             }
-            /*
-            else if (EXO.Modules.Murder4.M4_GoldGun)
-                if (__0 == "NonPatronSkin")
-                    GameObject.Find("/Game Logic").transform.Find("Weapons/Revolver").gameObject.GetComponent<VRC.Udon.UdonBehaviour>().SendCustomNetworkEvent(0, "PatronSkin");
-            */
+            
             if (EXO.Modules.Murder4.M4_NoCoolDown)
             {
                 if (__0 == "SyncDryFire" && __1.field_Private_APIUser_0.id == UserUtils.LocalDownload().field_Private_APIUser_0.id)
@@ -139,7 +135,7 @@ namespace EXO
                         __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
                     }
                 }
-            }
+            }           
             if (EXO.Modules.PrisonEsc.P_DeityMode)
             {
                 if (__0.ToLower().Contains("damage") && __1.field_Private_APIUser_0.id != UserUtils.LocalDownload().field_Private_APIUser_0.id)

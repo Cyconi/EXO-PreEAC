@@ -14,6 +14,8 @@ using VRC.Udon;
 using VRC.Udon.Common.Interfaces;
 using System.Collections;
 using static EXO_Udon.UdonStuff;
+using Wrapper.PlayerWrapper;
+using static EXO.Modules.Util;
 
 namespace EXO.Modules
 {
@@ -21,6 +23,7 @@ namespace EXO.Modules
     {
         internal static bool G_DeityMode;
         internal static bool G_NoCoolDown;
+        internal static bool G_PlusMoney;
         public override void OnQuickMenuInit()
         {
             var Ghost = new CollapsibleButtonGroup(MainModule.WorldEX, "<color=#9b0000>Ghost</color>");
@@ -62,6 +65,26 @@ namespace EXO.Modules
                 if (flag2)
                 {
                     flag2.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_ReadyStartGame");
+                }
+            });
+            new ToggleButton(Ghost, "Infinite Ammo", "Gives You Infinite Ammo", "Go Back To Normal", (value) =>
+            {
+                SelfInvinateAmmoState = value;
+                if (value) MelonLoader.MelonCoroutines.Start(SelfInvinateAmmo());
+            });
+            new ToggleButton(Ghost, "Infinite Ammo All", "Gives Everyone Infinite Ammo", "Go Back To Normal", (value) =>
+            {
+                InvinateAmmoState = value;
+                if (value) MelonLoader.MelonCoroutines.Start(InvinateAmmo());
+            });
+            new ToggleButton(Ghost, "Spam Shoot", "Spam Shoot All Weapons", "Stop", (value) =>
+            {
+                SpamShootState = value;
+                if (value) MelonLoader.MelonCoroutines.Start(GhostSpamShoot());
+                if (!value)
+                {
+                    SendUdonEventsWithName("Local_StartReloading");
+                    SendUdonEventsWithName("Local_FinishReloading");
                 }
             });
             new SingleButton(Ghost, "Craft All Guns", "Crafts All Guns", () =>
@@ -192,18 +215,22 @@ namespace EXO.Modules
                 {
                     flag2.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_HumanWin");
                 }
-            });            
-            new SingleButton(Ghost, "+30 Money All", "Gives Everyone Money", () =>
+            });                        
+            new SingleButton(Ghost, "+ Money", "Gives Everyone Money", () =>
             {
-                GameObject.Find("GameManager").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "AltCurrency");
+                TargetedEvent("OnSuspiciousKill", PlayerWrapper.LocalPlayer().prop_VRCPlayer_0);
+            });
+            new SingleButton(Ghost, "- Money", "Deletes Everyones Money", () =>
+            {
+                TargetedEvent("OnInnocentKill", PlayerWrapper.LocalPlayer().prop_VRCPlayer_0);                                                 
             });
             new SingleButton(Ghost, "+ Money All", "Gives Everyone Money", () =>
             {
-                GameObject.Find("GameManager").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "OnSuspiciousKill");                
+                GameObject.Find("GameManager").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "OnSuspiciousKill");
             });
-            new SingleButton(Ghost, "- Money All", "Deletes Everyones Money", () =>
+            new SingleButton(Ghost, "- Money All", "Gives Everyone Money", () =>
             {
-                GameObject.Find("GameManager").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "OnInnocentKill");                                 
+                GameObject.Find("GameManager").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "OnInnocentKill");
             });
             new SingleButton(Ghost, "Fuck Ghosts Money", "Makes The Ghost Lose Money", () =>
             {
@@ -213,22 +240,7 @@ namespace EXO.Modules
             {
                 GameObject.Find("DamageSync").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "BackStab");
                 GameObject.Find("DamageSync").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "BackStabDamage");                
-            });            
-            new ToggleButton(Ghost, "Infinite Ammo All", "Gives Everyone Infinite Ammo", "Go Back To Normal", (value) =>
-            {
-                InvinateAmmoState = value;
-                if (value) MelonLoader.MelonCoroutines.Start(InvinateAmmo());
-            });
-            new ToggleButton(Ghost, "Spam Shoot", "Spam Shoot All Weapons", "Stop", (value) =>
-            {
-                SpamShootState = value;
-                if (value) MelonLoader.MelonCoroutines.Start(GhostSpamShoot());
-                if (!value)
-                {
-                    SendUdonEventsWithName("Local_StartReloading");
-                    SendUdonEventsWithName("Local_FinishReloading");
-                }
-            });
+            });                                   
             new SingleButton(Ghost, "One Shot", "Forces All Guns To Shoot Once", () =>
             {
                 SendUdonEventsWithName("Local_FireOneShot");
@@ -266,6 +278,7 @@ namespace EXO.Modules
         }
         internal static bool SpamShootState;        
         internal static bool InvinateAmmoState;
+        internal static bool SelfInvinateAmmoState;
         internal static IEnumerator GhostSpamShoot()
         {
             for (; ; )
@@ -285,6 +298,16 @@ namespace EXO.Modules
                 if (!InvinateAmmoState)
                     yield break;
             }
-        }        
+        }
+        internal static IEnumerator SelfInvinateAmmo()
+        {
+            for (; ; )
+            {
+                TargetedEvent("InitializeWeapon", PlayerWrapper.LocalPlayer().prop_VRCPlayer_0);               
+                yield return new WaitForSeconds(1f);
+                if (!SelfInvinateAmmoState)
+                    yield break;
+            }
+        }
     }
 }
