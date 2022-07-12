@@ -97,7 +97,7 @@ namespace EXO
                     return false;
                 }
             }            
-            if (EXO.Modules.Ghost.G_NoCoolDown)
+            if (EXO.Modules.Ghost.G_NoReload)
             {
                 if (__0.Contains("Local_EndFiring") && __1.field_Private_APIUser_0.id.Equals(UserUtils.LocalDownload().field_Private_APIUser_0.id))
                 {
@@ -128,14 +128,33 @@ namespace EXO
                     {
                         __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "InitializeWeapon");
                         __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
-                    }                    
-                    if (__instance.gameObject.name.Contains("T3-Vector"))
-                    {
-                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "InitializeWeapon");
-                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
-                    }
+                    }                                        
                 }
-            }           
+            }
+            if (EXO.Modules.Infested.I_NoReload)
+            {
+                if (__0.Contains("Local_EndFiring") && __1.field_Private_APIUser_0.id.Equals(UserUtils.LocalDownload().field_Private_APIUser_0.id))
+                {
+                    if (__instance.gameObject.name.Contains("T4-M107"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");
+                    if (__instance.gameObject.name.Contains("T2-DesertEagle"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");
+                    if (__instance.gameObject.name.Contains("T3-M500"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");
+                    if (__instance.gameObject.name.Contains("ID1-M1911"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");                    
+                    if (__instance.gameObject.name.Contains("T2-MP7"))                    
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");                    
+                    if (__instance.gameObject.name.Contains("T3-Vector"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
+                    if (__instance.gameObject.name.Contains("T3-P90"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
+                    if (__instance.gameObject.name.Contains("T4-M249"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
+                    if (__instance.gameObject.name.Contains("ID8-M249"))
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_StartFiring");
+                }
+            }
             if (EXO.Modules.PrisonEsc.P_DeityMode)
             {
                 if (__0.ToLower().Contains("damage") && __1.field_Private_APIUser_0.id != UserUtils.LocalDownload().field_Private_APIUser_0.id)

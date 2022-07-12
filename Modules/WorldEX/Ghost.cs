@@ -22,8 +22,7 @@ namespace EXO.Modules
     internal class Ghost : BaseModule
     {
         internal static bool G_DeityMode;
-        internal static bool G_NoCoolDown;
-        internal static bool G_PlusMoney;
+        internal static bool G_NoReload;        
         public override void OnQuickMenuInit()
         {
             var Ghost = new CollapsibleButtonGroup(MainModule.WorldEX, "<color=#9b0000>Ghost</color>");
@@ -33,8 +32,8 @@ namespace EXO.Modules
             });
             new ToggleButton(Ghost, "No Reload", "Click To Shoot And Reload Automaticaly", "Go Back To Being Basic", (value) =>
             {
-                G_NoCoolDown = value;
-            });                       
+                G_NoReload = value;
+            });         
             new SingleButton(Ghost, "Bring Key", "Brings 3 Keys", () =>
             {
                 GameObject flag1 = GameObject.Find("PoliceStation_A/Functions/KeySpawn/Keys/Key");
@@ -61,11 +60,7 @@ namespace EXO.Modules
             });
             new SingleButton(Ghost, "Start Match", "Force Starts The Match", () =>
             {
-                GameObject flag2 = GameObject.Find("LobbyManager");
-                if (flag2)
-                {
-                    flag2.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_ReadyStartGame");
-                }
+                GameObject.Find("LobbyManager").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_ReadyStartGame");                
             });
             new ToggleButton(Ghost, "Infinite Ammo", "Gives You Infinite Ammo", "Go Back To Normal", (value) =>
             {
@@ -83,6 +78,7 @@ namespace EXO.Modules
                 if (value) MelonLoader.MelonCoroutines.Start(GhostSpamShoot());
                 if (!value)
                 {
+                    SendUdonEventsWithName("Local_EndFiring");
                     SendUdonEventsWithName("Local_StartReloading");
                     SendUdonEventsWithName("Local_FinishReloading");
                 }
@@ -202,19 +198,11 @@ namespace EXO.Modules
             });
             new SingleButton(Ghost, "Ghost Win", "Makes Ghost Win", () =>
             {
-                GameObject flag2 = GameObject.Find("LobbyManager");
-                if (flag2)
-                {
-                    flag2.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_GhostWin");
-                }
+                GameObject.Find("LobbyManager").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_GhostWin");                
             });
             new SingleButton(Ghost, "Humans Win", "Makes Humans Win", () =>
             {
-                GameObject flag2 = GameObject.Find("LobbyManager");
-                if (flag2)
-                {
-                    flag2.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_HumanWin");
-                }
+                GameObject.Find("LobbyManager").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_HumanWin");                
             });                        
             new SingleButton(Ghost, "+ Money", "Gives Everyone Money", () =>
             {
@@ -241,7 +229,7 @@ namespace EXO.Modules
                 GameObject.Find("DamageSync").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "BackStab");
                 GameObject.Find("DamageSync").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "BackStabDamage");                
             });                                   
-            new SingleButton(Ghost, "One Shot", "Forces All Guns To Shoot Once", () =>
+            new SingleButton(Ghost, "Shoot All", "Forces All Guns To Shoot Once", () =>
             {
                 SendUdonEventsWithName("Local_FireOneShot");
             });                        

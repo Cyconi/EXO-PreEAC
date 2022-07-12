@@ -702,6 +702,7 @@
     <Compile Include="Hornet\HornetFileManager.cs" />
     <Compile Include="Modules\WorldEX\AmongUs.cs" />
     <Compile Include="Modules\WorldEX\Ghost.cs" />
+    <Compile Include="Modules\WorldEX\Infested.cs" />
     <Compile Include="Modules\WorldEX\Murder4.cs" />
     <Compile Include="Modules\PlayerSelect.cs" />
     <Compile Include="Modules\WorldEX\PrisonEsc.cs" />
