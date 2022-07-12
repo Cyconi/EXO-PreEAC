@@ -15,7 +15,8 @@ namespace EXO.Modules
 {
     internal class Infested : BaseModule
     {
-        internal static bool I_NoReload;
+        internal static bool I_ClickShoot;
+        internal static bool I_DeathShot;
         public override void OnQuickMenuInit()
         {
             var Infested = new CollapsibleButtonGroup(MainModule.WorldEX, "<color=#9b0000>Infested</color>");
@@ -24,9 +25,13 @@ namespace EXO.Modules
             {
                 Ghost.G_NoReload = value;
             });
-            new ToggleButton(Infested, "No Reload", "Click To Shoot And Reload Automaticaly", "Go Back To Being Basic", (value) =>
+            new ToggleButton(Infested, "Click Shoot", "Removes Gun Cool Down Of Non Auto Weapons (Plus LMG)", "Go Back To Being Basic", (value) =>
             {
-                I_NoReload = value;
+                I_ClickShoot = value;
+            });
+            new ToggleButton(Infested, "Death Shot", "Makes Auto Guns Very Deadly", "Go Back To Being Basic", (value) =>
+            {
+                I_DeathShot = value;
             });
             new SingleButton(Infested, "Start Match", "Force Starts The Match", () =>
             {
@@ -58,9 +63,14 @@ namespace EXO.Modules
             });
             new ToggleButton(Infested, "Spam Traps", "Spam Arms The Traps", "Stop", (value) =>
             {
-                SpamShootState = value;
+                TrapState = value;
                 if (value) MelonLoader.MelonCoroutines.Start(TrapLoop());
                 
+            });
+            new SingleButton(Infested, "EarRape Guns", "Makes Ears Bleed", () =>
+            {
+                for (int i = 0; i < 10; i++)
+                    SendUdonEventsWithName("Local_FireOneShot");
             });
             new SingleButton(Infested, "Ghost Win", "Makes Ghost Win", () =>
             {
