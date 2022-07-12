@@ -206,11 +206,11 @@ namespace EXO.Modules
             });                        
             new SingleButton(Ghost, "+ Money", "Gives Everyone Money", () =>
             {
-                TargetedEvent("OnSuspiciousKill", PlayerWrapper.LocalPlayer().prop_VRCPlayer_0);
+                UdonSend("OnSuspiciousKill", "local");
             });
             new SingleButton(Ghost, "- Money", "Deletes Everyones Money", () =>
             {
-                TargetedEvent("OnInnocentKill", PlayerWrapper.LocalPlayer().prop_VRCPlayer_0);                                                 
+                UdonSend("OnInnocentKill", "local");
             });
             new SingleButton(Ghost, "+ Money All", "Gives Everyone Money", () =>
             {

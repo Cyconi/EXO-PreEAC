@@ -53,7 +53,7 @@ namespace EXO.Modules
             });
             new ToggleButton(Util, "Player ESP", "Player ESP On", "Player ESP Off", (value) =>
             {
-                ESP.CapsuleESP = value;
+                ESP.PlayerCapsuleESP = value;
                 GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
                 foreach (VRC.Player player in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
                     ESP.CapsuleHighlight(player, value);
@@ -61,7 +61,7 @@ namespace EXO.Modules
             });
             new ToggleButton(Util, "[Broken] Mesh ESP", "Player Mesh ESP On", "Player Mesh ESP Off", (value) =>
             {
-                ESP.MeshESP = value;
+                ESP.PlayerMeshESP = value;
                 GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
                 foreach (VRC.Player player in PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0)
                     ESP.MeshHighlight(player, value);                

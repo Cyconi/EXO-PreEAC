@@ -63,9 +63,9 @@ namespace EXO.Patch
                       
         internal static void OnPlayerJoin(VRC.Player __0)
         {
-            if (ESP.CapsuleESP)
+            if (ESP.PlayerCapsuleESP)
                 ESP.CapsuleHighlight(__0, true);                
-            if (ESP.MeshESP)            
+            if (ESP.PlayerMeshESP)            
                 ESP.MeshHighlight(__0, true);
             
                 

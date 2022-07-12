@@ -104,5 +104,21 @@ namespace EXO.Modules
                     yield break;
             }
         }
+        public static KeyCode[] keycodesClick = new KeyCode[] { KeyCode.Mouse0, KeyCode.JoystickButton15 };
+        public static IEnumerator ClickShoot()
+        {
+            for (; ; )
+            {
+                if (!I_DeathShot)
+                {
+                    yield break;
+                }
+                for (int i = 0; i < keycodesClick.Length; i++) if (Input.GetKeyDown(keycodesClick[i]))
+                    {
+                        
+                    }
+                yield return new WaitForEndOfFrame();
+            }
+        }
     }
 }

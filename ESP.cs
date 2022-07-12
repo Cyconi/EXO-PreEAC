@@ -20,19 +20,20 @@ namespace EXO
         internal static bool ItemESP;
         internal static bool TriggerESP;
         internal static bool BoxColESP;
-        internal static bool CapsuleESP;
+        internal static bool PlayerCapsuleESP;
         internal static bool RigidbodyESP;
         internal static bool UdonESP;
         internal static bool InterESP;
-        internal static bool MeshESP;
+        internal static bool PlayerMeshESP;        
 
         public static IEnumerator ItemHighlight()
         {                                                            
             Il2CppArrayBase<VRC.SDKBase.VRC_Pickup> AllBaseUdonPickups = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Pickup>();
             Il2CppArrayBase<VRCSDK2.VRC_Pickup> array = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Pickup>();
-            Il2CppArrayBase<VRCPickup> AllUdonPickups = Resources.FindObjectsOfTypeAll<VRCPickup>();
+            Il2CppArrayBase<VRCPickup> AllUdonPickups = Resources.FindObjectsOfTypeAll<VRCPickup>();            
             var AllSyncPickups = Resources.FindObjectsOfTypeAll<VRC_ObjectSync>();
             var AllSDK3SyncPickups = Resources.FindObjectsOfTypeAll<VRCObjectSync>();
+            var AllPoolPickups = Resources.FindObjectsOfTypeAll<VRC.SDK3.Components.VRCObjectPool>();            
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;
@@ -85,6 +86,17 @@ namespace EXO
                             }
                     }
                     catch { }
+                for (int i = 0; i < AllPoolPickups.Length; i++)
+                    try
+                    {
+                        if (AllPoolPickups[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllPoolPickups[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = AllPoolPickups[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, ItemESP);
+                            }
+                    }
+                    catch { }
 
                 if (!ItemESP)
                     yield break;
@@ -95,8 +107,8 @@ namespace EXO
         public static IEnumerator TriggerHighlight()
         {
             var AllTriggers = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Trigger>();
-            var AllSDK2Triggers = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Trigger>();
-            
+            var AllTriggerCol = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_TriggerColliderEventTrigger>();
+            var AllSDK2Triggers = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Trigger>();            
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;
@@ -110,6 +122,17 @@ namespace EXO
                             if (AllTriggers[i].GetComponent<MeshRenderer>() != null)
                             {
                                 var render = AllTriggers[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, TriggerESP);
+                            }
+                    }
+                    catch { }
+                for (int i = 0; i < AllTriggerCol.Length; i++)
+                    try
+                    {
+                        if (AllTriggerCol[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllTriggerCol[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = AllTriggerCol[i].GetComponent<MeshRenderer>();
                                 HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, TriggerESP);
                             }
                     }
@@ -191,7 +214,7 @@ namespace EXO
         public static void MeshHighlight(VRC.Player player, bool State)
         {
             var id = player.prop_APIUser_0.id;
-            if (id == null || id == PlayerWrapper.GetPlayer().prop_APIUser_0.id) return;
+            if (id == null || id == PlayerWrapper.LocalPlayer().prop_APIUser_0.id) return;
             foreach (Renderer renderer in player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>())
             {
                 HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(renderer, State);
@@ -199,7 +222,7 @@ namespace EXO
         }
         internal static void PlayerMeshHighlight()
         {
-            if (!MeshESP) return;                        
+            if (!PlayerMeshESP) return;                        
             try
             {
                 List<VRC.Player>.Enumerator player = PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList().GetEnumerator();
@@ -258,8 +281,11 @@ namespace EXO
         {
             var UdonBehaviours = Resources.FindObjectsOfTypeAll<VRC.Udon.UdonBehaviour>();
             var UdonSync = Resources.FindObjectsOfTypeAll<VRC.Networking.UdonSync>();
-            var Photon = Resources.FindObjectsOfTypeAll<Photon.Pun.PhotonView>();
-            var PhotonHandle = Resources.FindObjectsOfTypeAll<Photon.Pun.PhotonHandler>();
+            var UdonManagers = Resources.FindObjectsOfTypeAll<VRC.Udon.UdonManager>();
+            var UdonOnTrigger = Resources.FindObjectsOfTypeAll<VRC.Udon.OnTriggerStayProxy>();
+            var UdonOnCol = Resources.FindObjectsOfTypeAll<VRC.Udon.OnCollisionStayProxy>();
+            var UdonOnRender = Resources.FindObjectsOfTypeAll<VRC.Udon.OnRenderObjectProxy>();
+            var AllSDKUdon = Resources.FindObjectsOfTypeAll<VRC.SDK.Internal.VRCUdonAnalytics>();
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;
@@ -287,25 +313,58 @@ namespace EXO
                                 HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, UdonESP);
                             }
                     }
-                    catch { }
-                for (int i = 0; i < Photon.Length; i++)
+                    catch { }                
+                for (int i = 0; i < UdonManagers.Length; i++)
                     try
                     {
-                        if (Photon[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (Photon[i].GetComponent<MeshRenderer>() != null)
+                        if (UdonManagers[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (UdonManagers[i].GetComponent<MeshRenderer>() != null)
                             {
-                                var render = Photon[i].GetComponent<MeshRenderer>();
+                                var render = UdonManagers[i].GetComponent<MeshRenderer>();
                                 HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, UdonESP);
                             }
                     }
                     catch { }
-                for (int i = 0; i < PhotonHandle.Length; i++)
+                for (int i = 0; i < UdonOnTrigger.Length; i++)
                     try
                     {
-                        if (PhotonHandle[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (PhotonHandle[i].GetComponent<MeshRenderer>() != null)
+                        if (UdonOnTrigger[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (UdonOnTrigger[i].GetComponent<MeshRenderer>() != null)
                             {
-                                var render = PhotonHandle[i].GetComponent<MeshRenderer>();
+                                var render = UdonOnTrigger[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, UdonESP);
+                            }
+                    }
+                    catch { }
+                for (int i = 0; i < UdonOnCol.Length; i++)
+                    try
+                    {
+                        if (UdonOnCol[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (UdonOnCol[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = UdonOnCol[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, UdonESP);
+                            }
+                    }
+                    catch { }
+                for (int i = 0; i < UdonOnRender.Length; i++)
+                    try
+                    {
+                        if (UdonOnRender[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (UdonOnRender[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = UdonOnRender[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, UdonESP);
+                            }
+                    }
+                    catch { }
+                for (int i = 0; i < AllSDKUdon.Length; i++)
+                    try
+                    {
+                        if (AllSDKUdon[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllSDKUdon[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = AllSDKUdon[i].GetComponent<MeshRenderer>();
                                 HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, UdonESP);
                             }
                     }
@@ -367,6 +426,6 @@ namespace EXO
 
                 yield return new WaitForSeconds(0.1f);
             }
-        }
+        }                          
     }
 }

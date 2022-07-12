@@ -85,5 +85,55 @@ namespace EXO_Udon
 				}
 			}
 		}
+		internal static void UdonSend(string udonEvent, string targetnetwork)
+		{
+			switch (targetnetwork)
+			{
+				case "target":
+					{
+						for (int j = 0; j < WorldWrapper.udonBehaviours.Length; j++)
+						{
+							foreach (string name in WorldWrapper.udonBehaviours[j]._eventTable.Keys)
+							{
+								if (name == udonEvent)
+								{
+									SetEventOwner(WorldWrapper.udonBehaviours[j].gameObject, PlayerWrapper.SelectedVRCPlayer());
+									WorldWrapper.udonBehaviours[j].SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, name);
+								}
+							}
+						}
+					}
+					break;
+				case "everyone":
+					{
+						for (int j = 0; j < WorldWrapper.udonBehaviours.Length; j++)
+						{
+							foreach (string name in WorldWrapper.udonBehaviours[j]._eventTable.Keys)
+							{
+								if (name == udonEvent)
+								{
+									WorldWrapper.udonBehaviours[j].SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.All, name);
+								}
+							}
+						}
+					}
+					break;
+				case "local":
+					{
+						for (int j = 0; j < WorldWrapper.udonBehaviours.Length; j++)
+						{
+							foreach (string name in WorldWrapper.udonBehaviours[j]._eventTable.Keys)
+							{
+								if (name == udonEvent)
+								{
+									SetEventOwner(WorldWrapper.udonBehaviours[j].gameObject, PlayerWrapper.LocalPlayer());
+									WorldWrapper.udonBehaviours[j].SendCustomNetworkEvent(VRC.Udon.Common.Interfaces.NetworkEventTarget.Owner, name);
+								}
+							}
+						}
+					}
+					break;
+			}
+		}
 	}
 }
