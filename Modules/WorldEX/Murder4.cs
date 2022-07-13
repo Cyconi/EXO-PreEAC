@@ -126,9 +126,15 @@ namespace EXO.Modules
             {
                 KillAllStateM = value;
                 if (value) MelonLoader.MelonCoroutines.Start(KillLoopM());
-            });            
+            });
+            new ToggleButton(Murder4, "Spam Car Doors", "Spams The Car Doors", "No More Funny Sounds", (value) =>
+            {
+                CarDoorSpam = value;
+                if (value) MelonLoader.MelonCoroutines.Start(CarDoorLoop());
+            });
         }        
         internal static bool KillAllStateM;
+        internal static bool CarDoorSpam;
         internal static IEnumerator KillLoopM()
         {
             for (; ; )
@@ -163,6 +169,24 @@ namespace EXO.Modules
                 yield return null;
             }
             yield return null;
-        }        
+        }
+        private static IEnumerator CarDoorLoop()
+        {
+            for (; ; )
+            {
+                GameObject.Find("Environment/Garage/Car/Car Door (driver)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "SyncOpen");
+                GameObject.Find("Environment/Garage/Car/Car Door (passenger)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "SyncOpen");
+                GameObject.Find("Environment/Garage/Car/Car Door (backleft)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "SyncOpen");
+                GameObject.Find("Environment/Garage/Car/Car Door (backright)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "SyncOpen");
+                yield return new WaitForSeconds(0.05f);
+                GameObject.Find("Environment/Garage/Car/Car Door (driver)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "SyncClose");
+                GameObject.Find("Environment/Garage/Car/Car Door (passenger)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "SyncClose");
+                GameObject.Find("Environment/Garage/Car/Car Door (backleft)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "SyncClose");
+                GameObject.Find("Environment/Garage/Car/Car Door (backright)").GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "SyncClose");
+                yield return new WaitForSeconds(0.05f);
+                if (!CarDoorSpam)
+                    yield break;
+            }
+        }
     }
 }

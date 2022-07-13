@@ -142,34 +142,7 @@ namespace EXO.Modules
                         UdonBehaviour component2 = GameObject.Find(text).GetComponent<UdonBehaviour>();
                         component2.SendCustomNetworkEvent(0, "SyncKill");
                     }
-                }
-                //PrisonEsc it dont work idk lol
-                for (int i = 0; i < 34; i++)
-                {
-                    string text = "Scripts/Player Object Pool/PlayerData (" + i.ToString() + ")";                    
-                    bool flag = GameObject.Find(text).GetComponent<Text>().text.Equals(value);
-                    if (flag)
-                    {
-                        CLog.L(text);
-                        UdonBehaviour component2 = GameObject.Find(text).GetComponent<UdonBehaviour>();
-                        component2.SendCustomNetworkEvent(0, "Damage250");
-                    }
-                }
-                //Ghost it also dont work idk lol
-                for (int i = 0; i < 21; i++)
-                {
-                    string text = "GameManager/PlayerObjectList/Human/PlayerCharacterObject  (" + i.ToString() + ")/DamageSync";                    
-                    bool flag = GameObject.Find(text).GetComponent<Text>().text.Equals(value);
-                    if (flag)
-                    {
-                        CLog.L(text);
-                        UdonBehaviour component2 = GameObject.Find(text).GetComponent<UdonBehaviour>();
-                        component2.SendCustomNetworkEvent(0, "HitDamage80");
-                        component2.SendCustomNetworkEvent(0, "HitDamage80");
-                        component2.SendCustomNetworkEvent(0, "HitDamage80");
-
-                    }
-                }
+                }               
             }, true, null);
             new ToggleButton(PlayerSel, "Explode Spam", "GOO BOOOM", "No More Boom", (value) =>
             {
