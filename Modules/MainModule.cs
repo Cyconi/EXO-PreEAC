@@ -15,8 +15,7 @@ using Wrapper.WorldWrapper;
 namespace EXO
 {
     public partial class MainModule : BaseModule
-    {
-        
+    {        
         public static ButtonGroup MainMenu;
         public static MenuPage WorldEX;
         public static MenuPage Movement;

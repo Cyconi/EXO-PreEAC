@@ -28,71 +28,71 @@ namespace EXO
 
         public static IEnumerator ItemHighlight()
         {                                                            
-            Il2CppArrayBase<VRC.SDKBase.VRC_Pickup> AllBaseUdonPickups = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Pickup>();
-            Il2CppArrayBase<VRCSDK2.VRC_Pickup> array = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Pickup>();
-            Il2CppArrayBase<VRCPickup> AllUdonPickups = Resources.FindObjectsOfTypeAll<VRCPickup>();            
-            var AllSyncPickups = Resources.FindObjectsOfTypeAll<VRC_ObjectSync>();
-            var AllSDK3SyncPickups = Resources.FindObjectsOfTypeAll<VRCObjectSync>();
-            var AllPoolPickups = Resources.FindObjectsOfTypeAll<VRC.SDK3.Components.VRCObjectPool>();            
+            Il2CppArrayBase<VRC.SDKBase.VRC_Pickup> AllBaseUdonItem = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Pickup>();
+            Il2CppArrayBase<VRCSDK2.VRC_Pickup> SDK2Items = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Pickup>();
+            Il2CppArrayBase<VRCPickup> AllUdonItems = Resources.FindObjectsOfTypeAll<VRCPickup>();
+            var AllSyncItems = Resources.FindObjectsOfTypeAll<VRC_ObjectSync>();
+            var AllSDK3SyncItems = Resources.FindObjectsOfTypeAll<VRCObjectSync>();
+            var AllPoolItems = Resources.FindObjectsOfTypeAll<VRC.SDK3.Components.VRCObjectPool>();            
 
             while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
                 yield return null;
             
             for (; ; )
             {                
-                foreach (VRC.SDKBase.VRC_Pickup vrc_Pickup in AllBaseUdonPickups)
+                foreach (VRC.SDKBase.VRC_Pickup VRC_Item in AllBaseUdonItem)
                 {
-                    bool Object = !(vrc_Pickup == null) && !(vrc_Pickup.gameObject == null) && vrc_Pickup.gameObject.active && vrc_Pickup.enabled && vrc_Pickup.pickupable && !vrc_Pickup.name.Contains("ViewFinder") && !(HighlightsFX.prop_HighlightsFX_0 == null);
+                    bool Object = !(VRC_Item == null) && !(VRC_Item.gameObject == null) && VRC_Item.gameObject.active && VRC_Item.enabled && VRC_Item.pickupable && !VRC_Item.name.Contains("ViewFinder") && !(HighlightsFX.prop_HighlightsFX_0 == null);
                     if (Object)
                     {
-                        HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(vrc_Pickup.GetComponentInChildren<MeshRenderer>(), ItemESP);
+                        HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(VRC_Item.GetComponentInChildren<MeshRenderer>(), ItemESP);
                     }
                 }
-                foreach (VRCSDK2.VRC_Pickup vrc_Pickup in array)
+                foreach (VRCSDK2.VRC_Pickup VRC_Item in SDK2Items)
                 {
-                    bool Object = !(vrc_Pickup == null) && !(vrc_Pickup.gameObject == null) && vrc_Pickup.gameObject.active && vrc_Pickup.enabled && vrc_Pickup.pickupable && !vrc_Pickup.name.Contains("ViewFinder") && !(HighlightsFX.prop_HighlightsFX_0 == null);
+                    bool Object = !(VRC_Item == null) && !(VRC_Item.gameObject == null) && VRC_Item.gameObject.active && VRC_Item.enabled && VRC_Item.pickupable && !VRC_Item.name.Contains("ViewFinder") && !(HighlightsFX.prop_HighlightsFX_0 == null);
                     if (Object)
                     {
-                        HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(vrc_Pickup.GetComponentInChildren<MeshRenderer>(), ItemESP);
+                        HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(VRC_Item.GetComponentInChildren<MeshRenderer>(), ItemESP);
                     }
                 }
-                foreach (VRCPickup vrc_Pickup in AllUdonPickups)
+                foreach (VRCPickup VRC_Item in AllUdonItems)
                 {
-                    bool Object = !(vrc_Pickup == null) && !(vrc_Pickup.gameObject == null) && vrc_Pickup.gameObject.active && vrc_Pickup.enabled && vrc_Pickup.pickupable && !vrc_Pickup.name.Contains("ViewFinder") && !(HighlightsFX.prop_HighlightsFX_0 == null);
+                    bool Object = !(VRC_Item == null) && !(VRC_Item.gameObject == null) && VRC_Item.gameObject.active && VRC_Item.enabled && VRC_Item.pickupable && !VRC_Item.name.Contains("ViewFinder") && !(HighlightsFX.prop_HighlightsFX_0 == null);
                     if (Object)
                     {
-                        HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(vrc_Pickup.GetComponentInChildren<MeshRenderer>(), ItemESP);
+                        HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(VRC_Item.GetComponentInChildren<MeshRenderer>(), ItemESP);
                     }
                 }
-                for (int i = 0; i < AllSyncPickups.Length; i++)
+                for (int i = 0; i < AllSyncItems.Length; i++)
                     try
                     {
-                        if (AllSyncPickups[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (AllSyncPickups[i].GetComponent<MeshRenderer>() != null)
+                        if (AllSyncItems[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllSyncItems[i].GetComponent<MeshRenderer>() != null)
                             {
-                                var render = AllSyncPickups[i].GetComponent<MeshRenderer>();
+                                var render = AllSyncItems[i].GetComponent<MeshRenderer>();
                                 HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, ItemESP);
                             }
                     }
                     catch { }
-                for (int i = 0; i < AllSDK3SyncPickups.Length; i++)
+                for (int i = 0; i < AllSDK3SyncItems.Length; i++)
                     try
                     {
-                        if (AllSDK3SyncPickups[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (AllSDK3SyncPickups[i].GetComponent<MeshRenderer>() != null)
+                        if (AllSDK3SyncItems[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllSDK3SyncItems[i].GetComponent<MeshRenderer>() != null)
                             {
-                                var render = AllSDK3SyncPickups[i].GetComponent<MeshRenderer>();
+                                var render = AllSDK3SyncItems[i].GetComponent<MeshRenderer>();
                                 HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, ItemESP);
                             }
                     }
                     catch { }
-                for (int i = 0; i < AllPoolPickups.Length; i++)
+                for (int i = 0; i < AllPoolItems.Length; i++)
                     try
                     {
-                        if (AllPoolPickups[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (AllPoolPickups[i].GetComponent<MeshRenderer>() != null)
+                        if (AllPoolItems[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllPoolItems[i].GetComponent<MeshRenderer>() != null)
                             {
-                                var render = AllPoolPickups[i].GetComponent<MeshRenderer>();
+                                var render = AllPoolItems[i].GetComponent<MeshRenderer>();
                                 HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, ItemESP);
                             }
                     }
@@ -155,7 +155,57 @@ namespace EXO
                 yield return new WaitForSeconds(0.1f);
             }
         }
+        public static IEnumerator InteractableHighlight()
+        {
+            var AllInteractable = Resources.FindObjectsOfTypeAll<VRCInteractable>();
+            var AllBaseInteractable = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Interactable>();
+            var AllSDK2Interactable = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Interactable>();
 
+            while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
+                yield return null;
+
+            for (; ; )
+            {
+                for (int i = 0; i < AllInteractable.Length; i++)
+                    try
+                    {
+                        if (AllInteractable[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllInteractable[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = AllInteractable[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, InterESP);
+                            }
+                    }
+                    catch { }
+                for (int i = 0; i < AllBaseInteractable.Length; i++)
+                    try
+                    {
+                        if (AllBaseInteractable[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllBaseInteractable[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = AllBaseInteractable[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, InterESP);
+                            }
+                    }
+                    catch { }
+                for (int i = 0; i < AllSDK2Interactable.Length; i++)
+                    try
+                    {
+                        if (AllSDK2Interactable[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
+                            if (AllSDK2Interactable[i].GetComponent<MeshRenderer>() != null)
+                            {
+                                var render = AllSDK2Interactable[i].GetComponent<MeshRenderer>();
+                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, InterESP);
+                            }
+                    }
+                    catch { }
+
+                if (!InterESP)
+                    yield break;
+
+                yield return new WaitForSeconds(0.1f);
+            }
+        }
         public static IEnumerator BoxColliderHighlight()
         {
             var BoxCol = Resources.FindObjectsOfTypeAll<UnityEngine.BoxCollider>();
@@ -375,57 +425,6 @@ namespace EXO
 
                 yield return new WaitForSeconds(0.1f);
             }
-        }
-        public static IEnumerator InteractableHighlight()
-        {
-            var AllInteractable = Resources.FindObjectsOfTypeAll<VRCInteractable>();
-            var AllBaseInteractable = Resources.FindObjectsOfTypeAll<VRC.SDKBase.VRC_Interactable>();
-            var AllSDK2Interactable = Resources.FindObjectsOfTypeAll<VRCSDK2.VRC_Interactable>();
-
-            while (RoomManager.field_Internal_Static_ApiWorld_0 == null)
-                yield return null;
-
-            for (; ; )
-            {
-                for (int i = 0; i < AllInteractable.Length; i++)
-                    try
-                    {
-                        if (AllInteractable[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (AllInteractable[i].GetComponent<MeshRenderer>() != null)
-                            {
-                                var render = AllInteractable[i].GetComponent<MeshRenderer>();
-                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, InterESP);
-                            }
-                    }
-                    catch { }
-                for (int i = 0; i < AllBaseInteractable.Length; i++)
-                    try
-                    {
-                        if (AllBaseInteractable[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (AllBaseInteractable[i].GetComponent<MeshRenderer>() != null)
-                            {
-                                var render = AllBaseInteractable[i].GetComponent<MeshRenderer>();
-                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, InterESP);
-                            }
-                    }
-                    catch { }
-                for (int i = 0; i < AllSDK2Interactable.Length; i++)
-                    try
-                    {
-                        if (AllSDK2Interactable[i].gameObject && !(HighlightsFX.prop_HighlightsFX_0 == null))
-                            if (AllSDK2Interactable[i].GetComponent<MeshRenderer>() != null)
-                            {
-                                var render = AllSDK2Interactable[i].GetComponent<MeshRenderer>();
-                                HighlightsFX.field_Private_Static_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(render, InterESP);
-                            }
-                    }
-                    catch { }
-
-                if (!InterESP)
-                    yield break;
-
-                yield return new WaitForSeconds(0.1f);
-            }
-        }                          
+        }                                  
     }
 }

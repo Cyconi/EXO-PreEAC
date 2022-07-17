@@ -40,7 +40,7 @@ namespace EXO.Modules
 
         private static IEnumerator StartUpMenuLoad()
         {
-            while (GameObject.Find("UserInterface/Canvas_QuickMenu(Clone)") == null) 
+            while (GameObject.Find("UserInterface/Canvas_QuickMenu(Clone)") == null)
                 yield return new WaitForEndOfFrame();
 
             OnceMenuLoad();

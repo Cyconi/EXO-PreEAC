@@ -31,7 +31,7 @@ namespace EXO_Udon
 		}
 		public static void SendUdonEventsWithName(string udonEvent)
 		{
-			UdonBehaviour[] array = UnityEngine.Object.FindObjectsOfType<UdonBehaviour>();
+			UdonBehaviour[] array = WorldWrapper.udonBehaviours;
 			List<GameObject> list = new List<GameObject>();
 			for (int i = 0; i < array.Length; i++)
 			{

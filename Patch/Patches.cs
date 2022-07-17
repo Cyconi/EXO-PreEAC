@@ -144,10 +144,7 @@ namespace EXO
                     if (__instance.gameObject.name.Contains("ID1-M1911"))
                         __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");
                     if (__instance.gameObject.name.Contains("ID8-M249"))
-                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");
-
-                    
-                    
+                        __instance.gameObject.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Local_FireOneShot");                                        
                 }
             }
             if (EXO.Modules.Infested.I_DeathShot)

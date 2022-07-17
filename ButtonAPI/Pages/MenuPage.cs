@@ -53,7 +53,7 @@ namespace xButtonAPI.Pages
             {
 
                 var gameObject = UnityEngine.Object.Instantiate(xButtonAPI.menuPageBase, xButtonAPI.menuPageBase.transform.parent);
-                gameObject.name = "WorldMenu_" + menuName;
+                gameObject.name = "<color=#ffffff>[</color><color=#9b0000>EXOmenu</color><color=#ffffff>_</color>" + menuName + "<color=#ffffff>]</color>";
                 gameObject.transform.SetSiblingIndex(5);   
                 gameObject.SetActive(false);
                 region++;

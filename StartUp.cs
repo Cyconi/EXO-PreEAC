@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using UnityEngine;
+using Wrapper.WorldWrapper;
 
 namespace EXO
 {
@@ -24,7 +25,7 @@ namespace EXO
                 CLog.L("[ Hornet Custom Buttons Have Been Configured! ]");
             }
         }
-
+        
         private static IEnumerator StartUpMenuLoad()
         {
             while (GameObject.Find("UserInterface/Canvas_QuickMenu(Clone)") == null)
@@ -33,7 +34,10 @@ namespace EXO
             OnceMenuLoad();
             yield break;
         }
-
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        {
+            WorldWrapper.Init();
+        }
         internal static void OnceMenuLoad()        
         {
             {
