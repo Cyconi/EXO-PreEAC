@@ -12,6 +12,7 @@ using System.Collections;
 using MelonLoader;
 using UnityEngine.SceneManagement;
 using EXO.Patch;
+using EXO.GUI;
 
 namespace EXO.Modules
 {
@@ -84,8 +85,8 @@ namespace EXO.Modules
                 MelonCoroutines.Start(ESP.RigidbodyHighlight());
             });            
             new ToggleButton(Util, "Toggle Maker", "Make New Toggle", "Get rid Of Toggle", (value) =>
-            {
-                    ToggleBtn.SetActive(value);                
+            {                
+                ToggleBtn.SetActive(value);                
             });
             ToggleBtn = new ToggleButton(Util, "Toggle Button test1", "toggle buttons1", "toggle Button1", (value) =>
             {

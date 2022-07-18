@@ -40,6 +40,8 @@ namespace EXO
         }
         internal static void OnceMenuLoad()        
         {
+            GUI.Form1 ua = new GUI.Form1();
+            ua.Hide();
             {
                 Console.WriteLine("");
                 Console.WriteLine("");
