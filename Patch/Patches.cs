@@ -19,6 +19,7 @@ namespace EXO
 {
     public class Patches : BaseModule
     {
+        internal static bool AntiUdon;
         internal static UdonSync ___instance;
         public static HarmonyLib.Harmony instance;        
         private static HarmonyMethod GetLocalPatch(string methodName)
@@ -33,6 +34,9 @@ namespace EXO
         }
         private static bool ForceUdon(string __0, VRC.Player __1, UdonSync __instance)
         {
+            if (AntiUdon)
+                return false;
+
             if (EXO.Modules.Murder4.M4_GoldGun)
             {
                 if (__0 == "NonPatronSkin" && __1.field_Private_APIUser_0.id == UserUtils.LocalDownload().field_Private_APIUser_0.id)

@@ -134,15 +134,11 @@ namespace EXO.GUI
             {
                 Physics.gravity = (true ? new Vector3(0f, 0f, 0f) : new Vector3(0f, -9.81f, 0f));
                 EXO.Modules.Movement.FlyToggle = true;
-                EXO.Modules.Movement.NoClipToggle = true;
-                EXO.Modules.Movement.NoClip();
             }
             else
             {                
                 Physics.gravity = (false ? new Vector3(0f, 0f, 0f) : new Vector3(0f, -9.81f, 0f));
                 EXO.Modules.Movement.FlyToggle = false;
-                EXO.Modules.Movement.NoClipToggle = false;
-                EXO.Modules.Movement.NoClip();
             }                
         }        
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
@@ -196,6 +192,14 @@ namespace EXO.GUI
                 EXO.Modules.WorldExploits.ItemHide(false);
             else
                 EXO.Modules.WorldExploits.ItemHide(true);
+        }
+
+        private void checkBox5_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox5.Checked)
+                EXO.Patches.AntiUdon = true;
+            else
+                EXO.Patches.AntiUdon = false;
         }
     }
 }

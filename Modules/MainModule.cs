@@ -64,6 +64,10 @@ namespace EXO
             {
                 WayPoint.OpenMenu();
             });
+            new ToggleButton(MainMenu, "<color=#9b0000>Anti Udon</color>", "Stop Receiving Udon", "Turn Udon Back On", (value) =>
+            {
+                Patches.AntiUdon = value;                
+            });
             new SingleButton(MainMenu, "<color=#9b0000>Hornet</color>", "Opens Hornet Custom Button Menu", () =>
             {
                 HornetFileManager.CreateButtons();

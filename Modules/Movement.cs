@@ -95,8 +95,13 @@ namespace EXO.Modules
             Speed();            
             JetPack();
             ToSpace();
-        }        
-        //Comfort Fly        
+        }
+        public override void OnSceneWasLoaded(int buildIndex, string sceneName)
+        {
+            if (NoClipToggle)
+                NoClip();
+        }
+        //Comfort Fly
         public static float FlySpeed = 2f;        
         private void ComfortFly()
         {
