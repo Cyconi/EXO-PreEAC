@@ -33,7 +33,7 @@ namespace EXO
 
             OnceMenuLoad();
             yield break;
-        }
+        }        
         public override void OnSceneWasLoaded(int buildIndex, string sceneName)
         {
             WorldWrapper.Init();
@@ -41,7 +41,7 @@ namespace EXO
         internal static void OnceMenuLoad()        
         {
             GUI.Form1 ua = new GUI.Form1();
-            ua.Hide();
+            ua.Show();
             {
                 Console.WriteLine("");
                 Console.WriteLine("");
@@ -58,6 +58,14 @@ namespace EXO
                 CLog.S("");
                 CLog.S("");
                 CLog.L("[============================================================]");
+                Console.WriteLine("");
+                Console.WriteLine("");
+                CLog.L("[========================= KeyBinds =========================]");
+                CLog.L("[                                                            ]");
+                CLog.L("[    2    =  Hide GUI                                        ]");
+                CLog.L("[    3    =  Show GUI                                        ]");
+                CLog.L("[                                                            ]");
+                CLog.L("[========================= KeyBinds =========================]");
                 Console.WriteLine("");
                 Console.WriteLine("");
                 Console.WriteLine("");

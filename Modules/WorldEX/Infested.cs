@@ -29,7 +29,7 @@ namespace EXO.Modules
             {
                 I_ClickShoot = value;
             });
-            new ToggleButton(Infested, "Death Shot", "Makes Auto Guns Very Deadly", "Go Back To Being Basic", (value) =>
+            new ToggleButton(Infested, "Click Shot [broken]", "Makes Auto Guns Click Shoot?", "Go Back To Being Basic", (value) =>
             {
                 I_DeathShot = value;
             });

@@ -56,35 +56,7 @@ namespace EXO.Modules
                         Kill.GetComponent<UdonBehaviour>().SendCustomNetworkEvent(NetworkEventTarget.All, "Damage250");
                     }
                 }                                
-            });            
-            new SingleButton(Prison, "Bring All Misc Items", "Brings All Misc Items", () =>
-            {
-                CLog.L("Teleported Ducks");
-                GameObject Obj = GameObject.Find("Items/Misc Items/Rubber Duck Spawn");
-                System.Collections.Generic.List<GameObject> Ducks = new System.Collections.Generic.List<GameObject>
-                {
-                    GameObject.Find("Items/Misc Items/Basketball").gameObject,
-                    GameObject.Find("Items/Misc Items/Basketball Spawn").gameObject,
-                    GameObject.Find("Items/Misc Items/Soap").gameObject,
-                    GameObject.Find("Items/Misc Items/Soap Spawn").gameObject,
-                    GameObject.Find("Items/Misc Items/Fork").gameObject,
-                    GameObject.Find("Items/Misc Items/Fork Spawn").gameObject,                    
-                    GameObject.Find("Items/Misc Items/Rubber Duck Spawn").gameObject,
-                    GameObject.Find("Items/Misc Items/Rubber Duck").gameObject,
-                    GameObject.Find("Items/Misc Items/Rubber Duck/rubberduck").gameObject,
-                    GameObject.Find("Items/Misc Items/Food Trays/FoodTray_Full Pickup").gameObject,
-                    GameObject.Find("Items/Misc Items/Food Trays/FoodTray Full Spawn").gameObject,
-                    GameObject.Find("Items/Misc Items/Food Trays/FoodTray_Full Pickup (1)").gameObject,
-                    GameObject.Find("Items/Misc Items/Food Trays/FoodTray Full Spawn (1)").gameObject,
-                    GameObject.Find("Items/Misc Items/Food Trays/FoodTray Empty Spawn").gameObject,
-                    GameObject.Find("Items/Misc Items/Food Trays/FoodTray_Empty Pickup").gameObject,
-                };
-                foreach (GameObject gameObject in Ducks)
-                {
-                    Networking.SetOwner(VRCPlayer.field_Internal_Static_VRCPlayer_0.field_Private_VRCPlayerApi_0, gameObject);
-                    gameObject.transform.position = VRCPlayer.field_Internal_Static_VRCPlayer_0.transform.position + new Vector3(0f, 0.1f, 0f);
-                }
-            });
+            });                        
             new SingleButton(Prison, "Bring M4", "Brings A M4", () =>
             {
                 CLog.L("Teleported M4A1");

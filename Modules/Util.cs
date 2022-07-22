@@ -18,7 +18,7 @@ namespace EXO.Modules
 {
     internal class Util : BaseModule
     {
-        internal static ToggleButton ToggleBtn;
+        private static ToggleButton ToggleBtn;
 
         public void OnPlayerJoin(Player player)
         {

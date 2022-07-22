@@ -57,7 +57,6 @@ namespace EXO.Patch
                 CLog.L("A = Leave");
                 IsB = true;
             }
-
             return true;
         }
                       

@@ -13,7 +13,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-[assembly: MelonInfo(typeof(EXO.Melon.Overrider), "EXO", "1.0", "Cyconi")]
+[assembly: MelonInfo(typeof(EXO.Melon.Overrider), "EXO", "ortex", "Cyconi")]
 [assembly: MelonGame("VRChat", "VRChat")]
 [assembly: MelonColor(ConsoleColor.DarkRed)]
 // The following GUID is for the ID of the typelib if this project is exposed to COM

@@ -12,16 +12,18 @@ using xButtonAPI.Controls.Grouping;
 
 namespace EXO.Modules
 {
-    internal class Movment : BaseModule
+    internal class Movement : BaseModule
     {        
-        private static bool FlyToggle;
-        private static bool FastFlyToggle;        
-        private static bool CameraFlyToggle;
-        private static bool SpeedToggle;
+        internal static bool FlyToggle;
+        internal static bool FastFlyToggle;        
+        internal static bool CameraFlyToggle;
+        internal static bool SpeedToggle;
+        internal static bool NoClipToggle = false;
         private static bool JetPackToggle = true;
         private static bool SpaceCope;
-        internal static ToggleButton SpaceToggleBtn;
-        internal static VRCMotionState _motionState; //For Flys
+        private static ToggleButton SpaceToggleBtn;
+        internal static VRCMotionState _motionState;
+        private static readonly List<int> _disabledColliders = new List<int>();
         public override void OnQuickMenuInit()
         {            
             //Button Group
@@ -31,20 +33,45 @@ namespace EXO.Modules
             {
                 SpeedToggle = value;
             });
+            new ToggleButton(Movement, "NoClip", "No Clip", "Disable No Clip", (value) =>
+            {
+                if (FlyToggle || FastFlyToggle || CameraFlyToggle)
+                {
+                    NoClipToggle = value;
+                    NoClip();
+                }
+                else
+                    CLog.L("Turn On Fly First");                
+            });            
             new ToggleButton(Movement, "Comfort Fly", "Enable Comfort Flying", "Disable Comfort Flying", (value) => 
-            {               
-                Physics.gravity = (value ? new Vector3(0f, 0f, 0f) : new Vector3(0f, -9.81f, 0f));                
-                FlyToggle = value;
+            {
+                if (NoClipToggle)
+                    CLog.L("Turn Off No Clip");
+                else
+                {
+                    Physics.gravity = (value ? new Vector3(0f, 0f, 0f) : new Vector3(0f, -9.81f, 0f));
+                    FlyToggle = value;
+                }
             });
             new ToggleButton(Movement, "Camera Fly", "Enable Camera Directional Flying", "Disable Camera Directional Flying", (value) =>
             {
-                Physics.gravity = (value ? new Vector3(0f, 0f, 0f) : new Vector3(0f, -9.81f, 0f));
-                CameraFlyToggle = value;
+                if (NoClipToggle)
+                    CLog.L("Turn Off No Clip");
+                else
+                {
+                    Physics.gravity = (value ? new Vector3(0f, 0f, 0f) : new Vector3(0f, -9.81f, 0f));
+                    CameraFlyToggle = value;
+                }                               
             });
             new ToggleButton(Movement, "Fast Fly", "Enable Fast Flying", "Disable Fast Flying", (value) => 
             {
-                Physics.gravity = (value ? new Vector3(0f, 0f, 0f) : new Vector3(0f, -9.81f, 0f));
-                FastFlyToggle = value;
+                if (NoClipToggle)
+                    CLog.L("Turn Off No Clip");
+                else
+                {
+                    Physics.gravity = (value ? new Vector3(0f, 0f, 0f) : new Vector3(0f, -9.81f, 0f));
+                    FastFlyToggle = value;
+                }               
             });
             new ToggleButton(Movement, "JetPack", "Toggle On JetPack", "Toggle Off JetPack", (value) =>
             {
@@ -65,10 +92,10 @@ namespace EXO.Modules
             ComfortFly();
             FastFly();
             CameraFly();
-            Speed();
+            Speed();            
             JetPack();
             ToSpace();
-        }
+        }        
         //Comfort Fly        
         public static float FlySpeed = 2f;        
         private void ComfortFly()
@@ -81,6 +108,9 @@ namespace EXO.Modules
                 _motionState = player.GetComponent<VRCMotionState>();
 
             if (!FlyToggle) return;
+
+            if (FlyToggle)
+                Physics.gravity = new Vector3(0f, 0f, 0f);
 
             var playerTransform = player.transform;
 
@@ -121,6 +151,9 @@ namespace EXO.Modules
                 _motionState = player.GetComponent<VRCMotionState>();
 
             if (!CameraFlyToggle) return;
+
+            if (CameraFlyToggle)
+                Physics.gravity = new Vector3(0f, 0f, 0f);
 
             var playerTransform = player.transform;
             var camera = Camera.main.transform;
@@ -164,6 +197,9 @@ namespace EXO.Modules
 
             if (!FastFlyToggle) return;
 
+            if (FastFlyToggle)
+                Physics.gravity = new Vector3(0f, 0f, 0f);
+
             var playerTransform = player.transform;
 
             if (VRCInputManager.Method_Public_Static_VRCInput_String_0("Jump").prop_Single_2 == 1f)
@@ -172,7 +208,6 @@ namespace EXO.Modules
                 velocity.y = Networking.LocalPlayer.GetJumpImpulse();
                 Networking.LocalPlayer.SetVelocity(velocity);
             }
-
             if (XRDevice.isPresent)
             {
                 playerTransform.position += playerTransform.forward * Time.deltaTime * Input.GetAxis("Vertical") * FastFlySpeed;
@@ -193,6 +228,43 @@ namespace EXO.Modules
             }
             _motionState?.Reset();
         }
+        private static readonly List<Il2CppSystem.Type> DontAntiClip = new List<Il2CppSystem.Type>
+        {
+            UnhollowerRuntimeLib.Il2CppType.Of<PlayerSelector>(),
+            UnhollowerRuntimeLib.Il2CppType.Of<VRC_Pickup>(),
+            UnhollowerRuntimeLib.Il2CppType.Of<QuickMenu>(),
+            UnhollowerRuntimeLib.Il2CppType.Of<VRCSDK2.VRC_Station>(),
+            UnhollowerRuntimeLib.Il2CppType.Of<VRC_AvatarPedestal>(),
+            UnhollowerRuntimeLib.Il2CppType.Of<VRC_UiShape>(),
+            UnhollowerRuntimeLib.Il2CppType.Of<VRC.SDK3.Components.VRCUiShape>()
+        };
+        internal static void NoClip()
+        {
+            var player = VRCPlayer.field_Internal_Static_VRCPlayer_0;
+            if (player == null)
+                return;
+
+            var colliders = UnityEngine.Object.FindObjectsOfType<Collider>();
+            var ownCollider = player.GetComponents<Collider>().FirstOrDefault();
+
+            foreach (var collider in colliders)
+            {
+                if (DontAntiClip.Any(comp => collider.GetComponent(comp) != null))
+                    continue;
+
+
+                if (collider == ownCollider)
+                    continue;
+
+                if (!(NoClipToggle && collider.enabled || !NoClipToggle && _disabledColliders.Contains(collider.GetInstanceID())))
+                    continue;
+
+                collider.enabled = !NoClipToggle;
+                if (NoClipToggle)
+                    _disabledColliders.Add(collider.GetInstanceID());
+
+            }
+        }
         //Speed
         public static float SpeedVal = 3f;
         private void Speed()
@@ -207,9 +279,30 @@ namespace EXO.Modules
             if (!SpeedToggle) return;
 
             var playerTransform = player.transform;
-            var speed = Input.GetKey(KeyCode.LeftShift) ? SpeedVal * 2 : SpeedVal;
-            playerTransform.position += playerTransform.forward * Time.deltaTime * Input.GetAxis("Vertical") * speed;
-            playerTransform.position += playerTransform.right * Time.deltaTime * Input.GetAxis("Horizontal") * speed;            
+            
+            if (XRDevice.isPresent)
+            {
+                playerTransform.position += playerTransform.forward * Time.deltaTime * Input.GetAxis("Vertical") * FastFlySpeed;
+                playerTransform.position += playerTransform.right * Time.deltaTime * Input.GetAxis("Horizontal") * FastFlySpeed;
+                if (FlyToggle || FastFlyToggle || CameraFlyToggle)
+                {
+                    playerTransform.position += new Vector3(0f, Time.deltaTime * Input.GetAxis("Oculus_CrossPlatform_SecondaryThumbstickVertical") * FastFlySpeed);
+                }
+            }
+            else
+            {
+                var speed = Input.GetKey(KeyCode.LeftShift) ? SpeedVal * 2 : SpeedVal;
+                playerTransform.position += playerTransform.forward * Time.deltaTime * Input.GetAxis("Vertical") * speed;
+                playerTransform.position += playerTransform.right * Time.deltaTime * Input.GetAxis("Horizontal") * speed;
+                if (FlyToggle || FastFlyToggle || CameraFlyToggle)
+                {
+                    if (Input.GetKey(KeyCode.Q))
+                        playerTransform.position -= new Vector3(0f, Time.deltaTime * speed, 0f);
+
+                    if (Input.GetKey(KeyCode.E))
+                        playerTransform.position += new Vector3(0f, Time.deltaTime * speed, 0f);
+                }                
+            }
         }        
         private void JetPack()
         {

@@ -721,7 +721,7 @@
     <Compile Include="ConsoleLogger.cs" />
     <Compile Include="BaseModule.cs" />
     <Compile Include="Melon\Overrider.cs" />
-    <Compile Include="Modules\Movment.cs" />
+    <Compile Include="Modules\Movement.cs" />
     <Compile Include="Modules\Util.cs" />
     <Compile Include="Modules\WayPoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
