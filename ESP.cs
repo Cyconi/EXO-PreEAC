@@ -24,7 +24,8 @@ namespace EXO
         internal static bool RigidbodyESP;
         internal static bool UdonESP;
         internal static bool InterESP;
-        internal static bool PlayerMeshESP;        
+        internal static bool PlayerMeshESP;
+        internal static bool LineESP;
 
         public static IEnumerator ItemHighlight()
         {                                                            
@@ -244,50 +245,7 @@ namespace EXO
 
                 yield return new WaitForSeconds(0.1f);
             }
-        }        
-        public static void CapsuleHighlight(VRC.Player player, bool state)
-        {
-            Renderer renderer;
-            if (player == null)
-                renderer = null;
-
-            else
-            {
-                Transform transform = player.transform.Find("SelectRegion");
-                renderer = ((transform != null) ? transform.GetComponent<Renderer>() : null);
-                Renderer renderer2 = renderer;
-                if (renderer2)
-                    HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(renderer2, state);
-
-            }
-        }
-        public static void MeshHighlight(VRC.Player player, bool State)
-        {
-            var id = player.prop_APIUser_0.id;
-            if (id == null || id == PlayerWrapper.LocalPlayer().prop_APIUser_0.id) return;
-            foreach (Renderer renderer in player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>())
-            {
-                HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(renderer, State);
-            }
-        }
-        internal static void PlayerMeshHighlight()
-        {
-            if (!PlayerMeshESP) return;                        
-            try
-            {
-                List<VRC.Player>.Enumerator player = PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList().GetEnumerator();
-                if (player.Current.prop_APIUser_0 == null && player.Current) return;
-                while (player.MoveNext())
-                {
-                    MeshHighlight(player.Current, false);
-                }
-            }
-            catch { }
-        }
-        public void OnUpdate()
-        {
-            PlayerMeshHighlight();
-        }
+        }               
         public static IEnumerator RigidbodyHighlight()
         {
             var Rigidbody = Resources.FindObjectsOfTypeAll<UnityEngine.Rigidbody>();
@@ -425,6 +383,62 @@ namespace EXO
 
                 yield return new WaitForSeconds(0.1f);
             }
-        }                                  
+        }
+        public static void CapsuleHighlight(VRC.Player player, bool state)
+        {
+            Renderer renderer;
+            if (player == null)
+                renderer = null;
+
+            else
+            {
+                Transform transform = player.transform.Find("SelectRegion");
+                renderer = ((transform != null) ? transform.GetComponent<Renderer>() : null);
+                Renderer renderer2 = renderer;
+                if (renderer2)
+                    HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(renderer2, state);
+
+            }
+        }
+        public static void MeshHighlight(VRC.Player player, bool State)
+        {
+            var id = player.prop_APIUser_0.id;
+            if (id == null || id == PlayerWrapper.LocalPlayer().prop_APIUser_0.id) return;
+            foreach (Renderer renderer in player._vrcplayer.field_Internal_GameObject_0.GetComponentsInChildren<Renderer>())
+            {
+                HighlightsFX.prop_HighlightsFX_0.Method_Public_Void_Renderer_Boolean_0(renderer, State);
+            }
+        }
+        internal static void PlayerMeshHighlight()
+        {
+            if (!PlayerMeshESP) return;
+            try
+            {
+                List<VRC.Player>.Enumerator player = PlayerManager.field_Private_Static_PlayerManager_0.field_Private_List_1_Player_0.ToArray().ToList().GetEnumerator();
+                if (player.Current.prop_APIUser_0 == null && player.Current) return;
+                while (player.MoveNext())
+                {
+                    MeshHighlight(player.Current, false);
+                }
+            }
+            catch { }
+        }
+        public void OnUpdate()
+        {
+            PlayerMeshHighlight();
+        }        
+        public static List<Player> AllPlayer = new List<Player>();
+        public static IEnumerator PlayerLineESP()
+        {            
+            //List<Player>.Enumerator Curr = AllPlayer.GetEnumerator();
+            for (; ; )
+            {
+                if (!LineESP)
+                    yield return null;
+                if (LineESP)
+                    
+                yield return new WaitForSeconds(0f);
+            }
+        }        
     }
 }

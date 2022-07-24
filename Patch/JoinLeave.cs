@@ -16,7 +16,7 @@ namespace EXO.Patch
 
         public static void StartPatch()
         {
-            CLog.L("[Patches] Patching NetworkManager...");
+            CLog.L("[Patches] [  Patching NetworkManager... ]");
             Patches.instance.Patch(
                 typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_0)),
                 typeof(JoinLeave).GetMethod(nameof(A), BindingFlags.NonPublic | BindingFlags.Static).ToNewHarmonyMethod()
@@ -26,7 +26,7 @@ namespace EXO.Patch
                 typeof(NetworkManager).GetMethod(nameof(NetworkManager.Method_Public_Void_Player_1)),
                 typeof(JoinLeave).GetMethod(nameof(B), BindingFlags.NonPublic | BindingFlags.Static).ToNewHarmonyMethod()
             );
-            CLog.L("[Patches] Patched NetworkManager!");
+            CLog.L("[Patches] [ Patched NetworkManager! ]");
         }
 
         internal static bool A(VRC.Player __0) // Join
@@ -66,12 +66,9 @@ namespace EXO.Patch
                 ESP.CapsuleHighlight(__0, true);                
             if (ESP.PlayerMeshESP)            
                 ESP.MeshHighlight(__0, true);
-            
-                
         }        
         internal static void OnPlayerLeave(VRC.Player __0)
         {
-
         }
     }
 }

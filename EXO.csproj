@@ -716,6 +716,8 @@
     <Compile Include="Modules\WorldEX\WorldExploits.cs" />
     <Compile Include="Patch\JoinLeave.cs" />
     <Compile Include="Patch\Patches.cs" />
+    <Compile Include="PlayerLinesESP.cs" />
+    <Compile Include="Render.cs" />
     <Compile Include="Wrappers\PlayerWrapper.cs" />
     <Compile Include="Modules\MainModule.cs" />
     <Compile Include="ConsoleLogger.cs" />

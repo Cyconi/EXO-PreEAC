@@ -18,6 +18,12 @@ namespace Wrapper.PlayerWrapper
         private static Collider LocalPlayerCollider;
         private static VRC_EventHandler handler;
         internal static List<string> ClientUsers = new List<string>();
+        public static Player[] GetAllButSelf()
+        {
+            var c = PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0;
+            c.Remove(LocalPlayer());
+            return c.ToArray();
+        }
         public static Player SelectedVRCPlayer() => GameObject.Find("UserInterface").transform.Find("Canvas_QuickMenu(Clone)/Container/Window/QMParent/Menu_SelectedUser_Local").GetComponentInChildren<SelectedUserMenuQM>().field_Private_IUser_0.prop_String_0.ReturnUserID();
         public static IUser SelectedIUserPlayer() => GameObject.Find("UserInterface").transform.Find("Canvas_QuickMenu(Clone)/Container/Window/QMParent/Menu_SelectedUser_Local").GetComponentInChildren<SelectedUserMenuQM>().field_Private_IUser_0;
         public static Player[] GetAllPlayers() => PlayerManager.prop_PlayerManager_0.field_Private_List_1_Player_0.ToArray();        

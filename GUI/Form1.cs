@@ -40,25 +40,26 @@ namespace EXO.GUI
             //make the windows topmost
             this.TopMost = true;
 
-            CheckForIllegalCrossThreadCalls = false;
+            CheckForIllegalCrossThreadCalls = false;            
+
             MelonLoader.MelonCoroutines.Start(ShowHideMenu());            
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {                        
+        {            
         }        
         static bool showing = true;
         internal IEnumerator ShowHideMenu()
         {
             for (; ; )
             {
-                if (GetAsyncKeyState(Keys.D2) < 0 && showing == true) //hide it
+                if (GetAsyncKeyState(Keys.Insert) < 0 && showing == true) //hide it
                 {
                     this.Hide();                    
                     showing = false;
                     yield return new WaitForSeconds(0.05f);
                 }
-                else if (GetAsyncKeyState(Keys.D3) < 0 && showing == false) //show it 
+                else if (GetAsyncKeyState(Keys.Home) < 0 && showing == false) //show it 
                 {                    
                     this.Show();                    
                     showing = true;
