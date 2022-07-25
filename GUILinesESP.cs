@@ -3,7 +3,7 @@ using Wrapper.PlayerWrapper;
 
 namespace EXO
 {
-    internal class PlayerLinesESP
+    internal class GUILinesESP
     {        
         public static void OnGUI()
         {            

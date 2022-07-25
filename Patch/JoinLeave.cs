@@ -66,9 +66,11 @@ namespace EXO.Patch
                 ESP.CapsuleHighlight(__0, true);                
             if (ESP.PlayerMeshESP)            
                 ESP.MeshHighlight(__0, true);
+            PlayerLineESP.AllPlayers.Add(__0);
         }        
         internal static void OnPlayerLeave(VRC.Player __0)
         {
+            PlayerLineESP.AllPlayers.Remove(__0);
         }
     }
 }

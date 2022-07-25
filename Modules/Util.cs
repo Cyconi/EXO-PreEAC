@@ -45,12 +45,6 @@ namespace EXO.Modules
                 GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
                 MelonCoroutines.Start(ESP.InteractableHighlight());
             });
-            new ToggleButton(Util, "Line ESP", "Interactable ESP On", "Interactable ESP Off", (value) =>
-            {
-                ESP.LineESP = value;
-                GameObject.Find("Camera (eye)").GetComponent<HighlightsFXStandalone>().highlightColor = Color.HSVToRGB(0f, 1f, 1f);
-                MelonCoroutines.Start(ESP.PlayerLineESP());
-            });
             new ToggleButton(Util, "Player ESP", "Player ESP On", "Player ESP Off", (value) =>
             {
                 ESP.PlayerCapsuleESP = value;
@@ -95,9 +89,14 @@ namespace EXO.Modules
                 }
             });
             ToggleBtn.SetActive(false);
-            new ToggleButton(Util, "Line ESP", "Make New Toggle", "Get rid Of Toggle", (value) =>
+            new ToggleButton(Util, "Line ESP", "Shitty Line ESP", "Get rid Of Shitty Line ESP", (value) =>
             {
                 PlayerToggle = value;
+            });
+            new ToggleButton(Util, "Line ESP 3d", "Make New Toggle", "Get rid Of Toggle", (value) =>
+            {
+                PlayerLineESP.State = value;
+                MelonCoroutines.Start(PlayerLineESP.StartPlayerLine());
             });
         }
         internal bool PlayerToggle = false;
@@ -105,7 +104,7 @@ namespace EXO.Modules
         {
             //PlayerToggle = UnityEngine.GUI.Toggle(new Rect(7f, 32f, 100f, 30f), PlayerToggle, "Player ESP");
             if (PlayerToggle)
-                PlayerLinesESP.OnGUI();
+                GUILinesESP.OnGUI();
         }
         internal class UserUtils
         {
