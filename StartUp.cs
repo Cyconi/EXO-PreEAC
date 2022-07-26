@@ -62,9 +62,9 @@ namespace EXO
                 Console.WriteLine("");
                 CLog.L("[========================= KeyBinds =========================]");
                 CLog.L("[                                                            ]");
-                CLog.L("[   TAB   =  Access GUI                                      ]");
-                CLog.L("[    2    =  Hide GUI                                        ]");
-                CLog.L("[    3    =  Show GUI                                        ]");
+                CLog.L("[   Hold TAB    =  Access GUI                                ]");
+                CLog.L("[    Insert     =  Hide GUI                                  ]");
+                CLog.L("[     Home      =  Show GUI                                  ]");
                 CLog.L("[                                                            ]");
                 CLog.L("[========================= KeyBinds =========================]");
                 Console.WriteLine("");
